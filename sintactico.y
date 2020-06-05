@@ -26,62 +26,62 @@ void yyerror( const char *s)
 
 %start INICIO
 
-%token numero
-%token numero_negativo
-%token full
-%token fast
-%token size
-%token fit
-%token unit
-%token path
-%token type
-%token name
-%token delete_o
-%token add
-%token id
-%token mkdisk
-%token rmdisk
-%token fdisk
-%token mount
-%token unmount
-%token exec
-%token rep
-%token k
-%token m
-%token bf
-%token ff
-%token wf
-%token b
-%token p
-%token e
-%token l
-%token igual
-%token cadena_esp
-%token id
-%token ruta
-%token guion
+%token<STRING> numero
+%token<STRING> numero_negativo
+%token<STRING> full
+%token<STRING> fast
+%token<STRING> size
+%token<STRING> fit
+%token<STRING> unit
+%token<STRING> path
+%token<STRING> type
+%token<STRING> name
+%token<STRING> delete_o
+%token<STRING> add
+%token<STRING> id
+%token<STRING> mkdisk
+%token<STRING> rmdisk
+%token<STRING> fdisk
+%token<STRING> mount
+%token<STRING> unmount
+%token<STRING> exec
+%token<STRING> rep
+%token<STRING> k
+%token<STRING> m
+%token<STRING> bf
+%token<STRING> ff
+%token<STRING> wf
+%token<STRING> b
+%token<STRING> p
+%token<STRING> e
+%token<STRING> l
+%token<STRING> igual
+%token<STRING> cadena_esp
+%token<STRING> id
+%token<STRING> ruta
+%token<STRING> guion
 %token eof
 
 /*----------------------Declaración de producciones------------------------*/
 
-%type<TEXT> INICIO
-%type<TEXT> INSTRUCCIONES
-%type<TEXT> INSTRUCCION
-%type<TEXT> MKDISK
-%type<TEXT> MKDISKPS
-%type<TEXT> MKDISKP
-%type<TEXT> RMDISK
-%type<TEXT> FDISK
-%type<TEXT> FDISKPS
-%type<TEXT> FDISKP
-%type<TEXT> MOUNT
-%type<TEXT> MOUNTPS
-%type<TEXT> MOUNTP
-%type<TEXT> UNMOUNT
-%type<TEXT> EXEC
-%type<TEXT> REP
-%type<TEXT> REPPS
-%type<TEXT> REPP
+%type<STRING> INICIO
+%type<STRING> INSTRUCCIONES
+%type<STRING> INSTRUCCION
+%type<STRING> MKDISK
+%type<STRING> MKDISKPS
+%type<STRING> MKDISKP
+%type<STRING> RMDISK
+%type<STRING> FDISK
+%type<STRING> FDISKPS
+%type<STRING> FDISKP
+%type<STRING> MOUNT
+%type<STRING> MOUNTPS
+%type<STRING> MOUNTP
+%type<STRING> UNMOUNT
+%type<STRING> EXEC
+%type<STRING> REP
+%type<STRING> REPPS
+%type<STRING> REPP
 
 /*-------------------------------- Opciones --------------------------------------*/
 
@@ -90,7 +90,11 @@ void yyerror( const char *s)
 
 
 %union{
-char TEXT [255];
+char STRING [255];
+char FIT[2];
+char DELETE[4];
+char UNIT;
+int NUM;
 }
 
 /*------------------ Declaración de la gramática -------------------------*/

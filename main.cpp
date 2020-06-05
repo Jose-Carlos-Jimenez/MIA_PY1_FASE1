@@ -3,10 +3,12 @@
 #include <math.h>
 #include <QString>
 #include <QDebug>
+#include <string>
 #include <iostream>
 #include <scanner.h>
 #include <parser.h>
 #include <fstream>
+#include <cctype>
 
 using namespace std;
 
@@ -15,6 +17,19 @@ extern char *yytext;
 extern int SourceLine;
 extern FILE *yyin;
 extern int yyparse(void);
+
+string lowerCase(string n)
+{
+    string res;
+    if( n != "")
+    {
+        foreach (char c, n) {
+            res+=tolower(c);
+        }
+        return res;
+    }
+    return n;
+}
 
 void parsear()
 {
@@ -37,7 +52,7 @@ void parsear()
         else if(operacion.length() ==0)
         {
         }
-        else if(operacion.substr(0,4)== "exec")
+        else if(lowerCase(operacion.substr(0,4))== "exec")
         {
 
             /*exec -path="/home/jose/Archivos/Proyecto 1 [FASE 1]/Archivo de prueba.txt"*/
