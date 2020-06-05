@@ -57,25 +57,25 @@ extern int yydebug;
     name = 267,
     delete_o = 268,
     add = 269,
-    id = 270,
-    mkdisk = 271,
-    rmdisk = 272,
-    fdisk = 273,
-    mount = 274,
-    unmount = 275,
-    exec = 276,
-    rep = 277,
-    k = 278,
-    m = 279,
-    bf = 280,
-    ff = 281,
-    wf = 282,
-    b = 283,
-    p = 284,
-    e = 285,
-    l = 286,
-    igual = 287,
-    cadena_esp = 288,
+    mkdisk = 270,
+    rmdisk = 271,
+    fdisk = 272,
+    mount = 273,
+    unmount = 274,
+    exec = 275,
+    rep = 276,
+    k = 277,
+    m = 278,
+    bf = 279,
+    ff = 280,
+    wf = 281,
+    b = 282,
+    p = 283,
+    e = 284,
+    l = 285,
+    igual = 286,
+    cadena_esp = 287,
+    id = 288,
     ruta = 289,
     guion = 290,
     eof = 291
@@ -87,11 +87,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 92 "sintactico.y" /* yacc.c:1909  */
+#line 98 "sintactico.y" /* yacc.c:1909  */
 
-char TEXT [255];
+char* STRING;
+char* NUM;
 
-#line 95 "parser.h" /* yacc.c:1909  */
+#line 96 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

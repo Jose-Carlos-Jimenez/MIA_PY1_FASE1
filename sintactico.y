@@ -9,6 +9,9 @@
 #include <QDebug>
 #include <iostream>
 #include <scanner.h>
+#include <typeinfo>
+#include <MKDISK.h>
+#define YYSTYPE char *
 
 using namespace std;
 
@@ -16,9 +19,13 @@ extern int yylex(void);
 extern char *yytext;
 extern  int SourceLine;
 extern FILE *yyin;
+
+MKDISK_* mkdisk_ = new MKDISK_();
+
 void yyerror( const char *s)
 {
     printf("Error sintáctico en la fila %u\n",SourceLine);
+    s=s;
 }
 %}
 
@@ -26,8 +33,8 @@ void yyerror( const char *s)
 
 %start INICIO
 
-%token<STRING> numero
-%token<STRING> numero_negativo
+%token<NUM> numero
+%token<NUM> numero_negativo
 %token<STRING> full
 %token<STRING> fast
 %token<STRING> size
@@ -38,7 +45,6 @@ void yyerror( const char *s)
 %token<STRING> name
 %token<STRING> delete_o
 %token<STRING> add
-%token<STRING> id
 %token<STRING> mkdisk
 %token<STRING> rmdisk
 %token<STRING> fdisk
@@ -90,11 +96,8 @@ void yyerror( const char *s)
 
 
 %union{
-char STRING [255];
-char FIT[2];
-char DELETE[4];
-char UNIT;
-int NUM;
+char* STRING;
+char* NUM;
 }
 
 /*------------------ Declaración de la gramática -------------------------*/
@@ -113,24 +116,23 @@ INSTRUCCION: MKDISK
            | UNMOUNT
            | REP
            | EXEC
-           | error
 ;
 
-MKDISK:mkdisk MKDISKPS
+MKDISK:mkdisk MKDISKPS {mkdisk_->printMk();printf("-------------\n");mkdisk_ = new MKDISK_();}
 ;
 
 MKDISKPS: MKDISKPS MKDISKP
         | MKDISKP
 ;
 
-MKDISKP: guion size igual numero
-       | guion fit igual bf
-       | guion fit igual ff
-       | guion fit igual wf
-       | guion unit igual k
-       | guion unit igual m
-       | guion path igual ruta
-       | guion path igual cadena_esp
+MKDISKP: guion size igual numero {mkdisk_->setSize(yytext);}
+       | guion fit igual bf {mkdisk_->setFit(yytext);}
+       | guion fit igual ff {mkdisk_->setFit(yytext);}
+       | guion fit igual wf {mkdisk_->setFit(yytext);}
+       | guion unit igual k {mkdisk_->setUnit(yytext);}
+       | guion unit igual m {mkdisk_->setUnit(yytext);}
+       | guion path igual ruta {mkdisk_->setPath(yytext);}
+       | guion path igual cadena_esp {mkdisk_->setPath(yytext);}
 ;
 
 RMDISK: rmdisk guion path igual ruta

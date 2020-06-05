@@ -12,5 +12,6 @@ DISTFILES += \
     sintactico.y
 
 HEADERS += \
+    MKDISK.h \
     parser.h \
     scanner.h

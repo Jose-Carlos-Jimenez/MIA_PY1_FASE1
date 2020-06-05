@@ -25,7 +25,7 @@ id ([a-zA-Z0-9"_""-"])+
 ('\s'|'\r'|'\t')+ {};
 "\n" {SourceLine++;}
 {comentarios} {};
-{numero} {return numero;};
+{numero} {return (numero);};
 {numero_negativo}     {return (numero_negativo);};
 [-] {return(guion);};
 "full" {return (full);};
