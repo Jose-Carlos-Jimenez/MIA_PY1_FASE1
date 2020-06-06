@@ -64,8 +64,10 @@ void yyerror( const char *s)
 %token<STRING> igual
 %token<STRING> cadena_esp
 %token<STRING> id
+%token<STRING> disk
 %token<STRING> ruta
 %token<STRING> guion
+%token<STRING> mbr
 %token eof
 
 /*----------------------Declaración de producciones------------------------*/
@@ -196,8 +198,8 @@ REPP: guion path igual ruta
     | guion path igual cadena_esp
     | guion id igual id
     | guion id igual cadena_esp
-    | guion name igual id
-    | guion name igual cadena_esp
+    | guion name igual mbr
+    | guion name igual disk
 ;
 %%
 

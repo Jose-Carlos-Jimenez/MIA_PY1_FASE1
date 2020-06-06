@@ -76,9 +76,11 @@ extern int yydebug;
     igual = 286,
     cadena_esp = 287,
     id = 288,
-    ruta = 289,
-    guion = 290,
-    eof = 291
+    disk = 289,
+    ruta = 290,
+    guion = 291,
+    mbr = 292,
+    eof = 293
   };
 #endif
 
@@ -87,12 +89,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 98 "sintactico.y" /* yacc.c:1909  */
+#line 100 "sintactico.y" /* yacc.c:1909  */
 
 char* STRING;
 char* NUM;
 
-#line 96 "parser.h" /* yacc.c:1909  */
+#line 98 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

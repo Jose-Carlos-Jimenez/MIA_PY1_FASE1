@@ -30,6 +30,7 @@ id ([a-zA-Z0-9"_""-"])+
 [-] {return(guion);};
 "full" {return (full);};
 "fast" {return (fast);};
+"mbr" {return (mbr);};
 "size" {return (size);};
 "fit" {return (fit);};
 "unit" {return (unit);};
@@ -38,6 +39,7 @@ id ([a-zA-Z0-9"_""-"])+
 "name" {return (name);};
 "delete" {return (delete_o);};
 "add" {return (add);};
+"disk" {return(disk);};
 "id" {return (id);};
 "mkdisk" {return (mkdisk);};
 "rmdisk" {return (rmdisk);};
