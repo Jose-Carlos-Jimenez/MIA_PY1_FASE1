@@ -89,7 +89,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 100 "sintactico.y" /* yacc.c:1909  */
+#line 102 "sintactico.y" /* yacc.c:1909  */
 
 char* STRING;
 char* NUM;

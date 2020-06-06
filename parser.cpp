@@ -73,6 +73,7 @@
 #include <scanner.h>
 #include <typeinfo>
 #include <MKDISK.h>
+#include <RMDISK.h>
 #define YYSTYPE char *
 
 using namespace std;
@@ -83,6 +84,7 @@ extern  int SourceLine;
 extern FILE *yyin;
 
 MKDISK_* mkdisk_ = new MKDISK_();
+RMDISK_* rmdisk_ = new RMDISK_();
 
 void yyerror( const char *s)
 {
@@ -90,7 +92,7 @@ void yyerror( const char *s)
     s=s;
 }
 
-#line 94 "parser.cpp" /* yacc.c:339  */
+#line 96 "parser.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -169,12 +171,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 100 "sintactico.y" /* yacc.c:355  */
+#line 102 "sintactico.y" /* yacc.c:355  */
 
 char* STRING;
 char* NUM;
 
-#line 178 "parser.cpp" /* yacc.c:355  */
+#line 180 "parser.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -205,7 +207,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 209 "parser.cpp" /* yacc.c:358  */
+#line 211 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -508,13 +510,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   108,   108,   110,   111,   114,   115,   116,   117,   118,
-     119,   120,   123,   126,   127,   130,   131,   132,   133,   134,
-     135,   136,   137,   140,   141,   144,   147,   148,   150,   151,
-     152,   153,   154,   155,   156,   157,   158,   159,   160,   161,
-     162,   163,   164,   165,   166,   167,   170,   172,   173,   176,
-     177,   178,   179,   182,   183,   186,   187,   190,   193,   194,
-     197,   198,   199,   200,   201,   202
+       0,   110,   110,   112,   113,   116,   117,   118,   119,   120,
+     121,   122,   125,   128,   129,   132,   133,   134,   135,   136,
+     137,   138,   139,   142,   143,   146,   149,   150,   152,   153,
+     154,   155,   156,   157,   158,   159,   160,   161,   162,   163,
+     164,   165,   166,   167,   168,   169,   172,   174,   175,   178,
+     179,   180,   181,   184,   185,   188,   189,   192,   195,   196,
+     199,   200,   201,   202,   203,   204
 };
 #endif
 
@@ -1452,61 +1454,73 @@ yyreduce:
   switch (yyn)
     {
         case 12:
-#line 123 "sintactico.y" /* yacc.c:1646  */
+#line 125 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->printMk();printf("-------------\n");mkdisk_ = new MKDISK_();}
-#line 1458 "parser.cpp" /* yacc.c:1646  */
+#line 1460 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 130 "sintactico.y" /* yacc.c:1646  */
+#line 132 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setSize(yytext);}
-#line 1464 "parser.cpp" /* yacc.c:1646  */
+#line 1466 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 131 "sintactico.y" /* yacc.c:1646  */
+#line 133 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit(yytext);}
-#line 1470 "parser.cpp" /* yacc.c:1646  */
+#line 1472 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 132 "sintactico.y" /* yacc.c:1646  */
+#line 134 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit(yytext);}
-#line 1476 "parser.cpp" /* yacc.c:1646  */
+#line 1478 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 133 "sintactico.y" /* yacc.c:1646  */
+#line 135 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit(yytext);}
-#line 1482 "parser.cpp" /* yacc.c:1646  */
+#line 1484 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 134 "sintactico.y" /* yacc.c:1646  */
+#line 136 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setUnit(yytext);}
-#line 1488 "parser.cpp" /* yacc.c:1646  */
+#line 1490 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 135 "sintactico.y" /* yacc.c:1646  */
+#line 137 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setUnit(yytext);}
-#line 1494 "parser.cpp" /* yacc.c:1646  */
+#line 1496 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 136 "sintactico.y" /* yacc.c:1646  */
+#line 138 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setPath(yytext);}
-#line 1500 "parser.cpp" /* yacc.c:1646  */
+#line 1502 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 137 "sintactico.y" /* yacc.c:1646  */
+#line 139 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setPath(yytext);}
-#line 1506 "parser.cpp" /* yacc.c:1646  */
+#line 1508 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 142 "sintactico.y" /* yacc.c:1646  */
+    {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+#line 1514 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 143 "sintactico.y" /* yacc.c:1646  */
+    {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+#line 1520 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1510 "parser.cpp" /* yacc.c:1646  */
+#line 1524 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1741,6 +1755,6 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 204 "sintactico.y" /* yacc.c:1906  */
+#line 206 "sintactico.y" /* yacc.c:1906  */
 
 

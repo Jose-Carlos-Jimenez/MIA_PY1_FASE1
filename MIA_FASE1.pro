@@ -13,5 +13,7 @@ DISTFILES += \
 
 HEADERS += \
     MKDISK.h \
+    RMDISK.h \
     parser.h \
-    scanner.h
+    scanner.h \
+    structs.h

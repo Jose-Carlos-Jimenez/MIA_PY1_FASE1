@@ -11,6 +11,7 @@
 #include <scanner.h>
 #include <typeinfo>
 #include <MKDISK.h>
+#include <RMDISK.h>
 #define YYSTYPE char *
 
 using namespace std;
@@ -21,6 +22,7 @@ extern  int SourceLine;
 extern FILE *yyin;
 
 MKDISK_* mkdisk_ = new MKDISK_();
+RMDISK_* rmdisk_ = new RMDISK_();
 
 void yyerror( const char *s)
 {
@@ -137,8 +139,8 @@ MKDISKP: guion size igual numero {mkdisk_->setSize(yytext);}
        | guion path igual cadena_esp {mkdisk_->setPath(yytext);}
 ;
 
-RMDISK: rmdisk guion path igual ruta
-      | rmdisk guion path igual cadena_esp
+RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+      | rmdisk guion path igual cadena_esp {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
 ;
 
 FDISK: fdisk FDISKPS

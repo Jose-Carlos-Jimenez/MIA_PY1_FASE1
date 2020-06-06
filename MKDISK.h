@@ -10,6 +10,9 @@
 #include <cctype>
 #include <libgen.h>
 #include <fstream>
+#include <chrono>
+#include <ctime>
+#include <structs.h>
 
 using namespace std;
 
@@ -18,13 +21,10 @@ class MKDISK_
 private:
     int size;
     char fit_[2];
-    std::string unit;
+    string unit;
     char path[255];
     bool correct;
-    struct kbyte
-    {
-        char space[1024] = "0";
-    };
+    MBR master;
 
 public:
     MKDISK_(){};
@@ -39,6 +39,8 @@ public:
     int getSize();
     int getUnit();
     std::string toLowerString(string);
+    void configureMaster();
+    char getFit();
 };
 
 void MKDISK_::setSize(char *value)
@@ -49,6 +51,8 @@ void MKDISK_::setSize(char *value)
 void MKDISK_::setFit(char *value)
 {
     strcpy(this->fit_, value);
+    this->fit_[0] = tolower(fit_[0]);
+    this->fit_[1] = tolower(fit_[1]);
 }
 
 void MKDISK_::setUnit(char *value)
@@ -64,7 +68,6 @@ void MKDISK_::setPath(char *value)
         aux = aux.substr(1,aux.length()-2);
         const char* nValue = aux.c_str();
         strcpy(this->path, nValue);
-        cout << this->path << endl;
     }
     else
     {
@@ -106,6 +109,7 @@ int MKDISK_::createDisk()
     setCorrect();
     if(this->correct)
     {
+        //Creando el disco principal
         string pathClone = this->path;
         string pathTwice = this->path;
         const size_t last_slash_idx = pathClone.find_last_of("/");
@@ -135,11 +139,23 @@ int MKDISK_::createDisk()
         }
         fflush(f);
         fclose(f);
+
+        // Añadiendo MBR
+        configureMaster();
+        FILE *nF;
+        nF = fopen(pathTwice.c_str(),"rb+");
+        fseek(nF,0,SEEK_SET);
+        fwrite(&this->master, sizeof (MBR),1,nF);
+        fclose(nF);
+
+        // Creación de RAID 1
         ifstream  original_disk(pathTwice, std::ios::binary);
         string name_without_ext = pathTwice.substr(0, pathTwice.size()-5);
         ofstream  dst(name_without_ext+"[RAID].disk",   std::ios::binary);
         dst << original_disk.rdbuf();
 
+        //Mensaje para notificar.
+        cout << "Disco creado con éxito." << endl;
         return 1;
     }
     return 0;
@@ -167,6 +183,41 @@ string MKDISK_::toLowerString(string input)
         c = ::tolower(c);
     });
     return input;
+}
+
+void MKDISK_::configureMaster()
+{
+    // Seteando tamaño
+    master.mbr_tamano = getSize()/1024;
+
+    // Seteando fecha y hora
+    time_t     now = time(0);
+    master.mbr_fecha_creacion = now;
+    /*
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    char s = strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    cout << buf << endl;
+    */
+
+    // Firma del disco
+    srand(time(NULL));
+    int num = rand();
+    num=1+rand()%(100000-1);
+    master.mbr_disk_signature = num;
+
+    // Guardando tipo de fit
+    master.disk_fit = getFit();
+}
+
+char MKDISK_::getFit()
+{
+    if(fit_[0]== '\0')
+    {
+        return 'F';
+    }
+    return toupper(this->fit_[0]);
 }
 
 std::string convertToString(char* a, int size)
