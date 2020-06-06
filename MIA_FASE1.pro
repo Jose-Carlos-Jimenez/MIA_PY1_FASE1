@@ -12,6 +12,7 @@ DISTFILES += \
     sintactico.y
 
 HEADERS += \
+    FDISK.h \
     MKDISK.h \
     RMDISK.h \
     parser.h \

@@ -12,7 +12,8 @@
 #include <typeinfo>
 #include <MKDISK.h>
 #include <RMDISK.h>
-#define YYSTYPE char *
+#include <FDISK.h>
+//#define YYSTYPE char *
 
 using namespace std;
 
@@ -23,6 +24,7 @@ extern FILE *yyin;
 
 MKDISK_* mkdisk_ = new MKDISK_();
 RMDISK_* rmdisk_ = new RMDISK_();
+FDISK_* fdisk_ = new FDISK_();
 
 void yyerror( const char *s)
 {
@@ -129,44 +131,44 @@ MKDISKPS: MKDISKPS MKDISKP
         | MKDISKP
 ;
 
-MKDISKP: guion size igual numero {mkdisk_->setSize(yytext);}
-       | guion fit igual bf {mkdisk_->setFit(yytext);}
-       | guion fit igual ff {mkdisk_->setFit(yytext);}
-       | guion fit igual wf {mkdisk_->setFit(yytext);}
-       | guion unit igual k {mkdisk_->setUnit(yytext);}
-       | guion unit igual m {mkdisk_->setUnit(yytext);}
-       | guion path igual ruta {mkdisk_->setPath(yytext);}
-       | guion path igual cadena_esp {mkdisk_->setPath(yytext);}
+MKDISKP: guion size igual numero {mkdisk_->setSize($4);}
+       | guion fit igual bf {mkdisk_->setFit($4);}
+       | guion fit igual ff {mkdisk_->setFit($4);}
+       | guion fit igual wf {mkdisk_->setFit($4);}
+       | guion unit igual k {mkdisk_->setUnit($4);}
+       | guion unit igual m {mkdisk_->setUnit($4);}
+       | guion path igual ruta {mkdisk_->setPath($4);}
+       | guion path igual cadena_esp {mkdisk_->setPath($4);}
 ;
 
-RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
-      | rmdisk guion path igual cadena_esp {rmdisk_->setPath(yytext);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath($5);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+      | rmdisk guion path igual cadena_esp {rmdisk_->setPath($5);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
 ;
 
-FDISK: fdisk FDISKPS
+FDISK: fdisk FDISKPS{fdisk_->createPart();printf("-------------\n");fdisk_ = new FDISK_();}
 ;
 
 FDISKPS: FDISKP
        | FDISKPS FDISKP
 ;
-FDISKP:   guion size igual numero
-        | guion unit igual b
-        | guion unit igual k
-        | guion unit igual m
-        | guion path igual ruta
-        | guion path igual cadena_esp
-        | guion type igual p
-        | guion type igual e
-        | guion type igual l
-        | guion fit igual bf
-        | guion fit igual ff
-        | guion fit igual wf
-        | guion delete_o igual fast
-        | guion delete_o igual full
-        | guion name igual id
-        | guion name igual cadena_esp
-        | guion add igual numero
-        | guion add igual numero_negativo
+FDISKP:   guion size igual numero {fdisk_->setSize($4);}
+        | guion unit igual b {fdisk_->setUnit($4);}
+        | guion unit igual k {fdisk_->setUnit($4);}
+        | guion unit igual m {fdisk_->setUnit($4);}
+        | guion path igual ruta {fdisk_->setPath($4);}
+        | guion path igual cadena_esp {fdisk_->setPath($4);}
+        | guion type igual p {fdisk_->setType($4);}
+        | guion type igual e {fdisk_->setType($4);}
+        | guion type igual l {fdisk_->setType($4);}
+        | guion fit igual bf {fdisk_->setFit($4);}
+        | guion fit igual ff {fdisk_->setFit($4);}
+        | guion fit igual wf {fdisk_->setFit($4);}
+        | guion delete_o igual fast {fdisk_->setDelete($4);}
+        | guion delete_o igual full {fdisk_->setDelete($4);}
+        | guion name igual id {fdisk_->setName($4);}
+        | guion name igual cadena_esp {fdisk_->setName($4);}
+        | guion add igual numero {fdisk_->setAdd($4);}
+        | guion add igual numero_negativo {fdisk_->setAdd($4);}
 ;
 
 MOUNT: mount MOUNTPS;

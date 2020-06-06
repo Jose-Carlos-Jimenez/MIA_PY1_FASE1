@@ -37,7 +37,7 @@ void parsear()
     while(true)
     {
         string operacion;
-        cout << "\nMIA ->";
+        std::cout << "\u001b[31m" << "[MIA] :" << "\x1B[0m";
         std::getline(std::cin, operacion);
         QString qString(operacion.c_str());
         if(operacion=="exit")
@@ -55,7 +55,6 @@ void parsear()
         else if(lowerCase(operacion.substr(0,4))== "exec")
         {
 
-            /*exec -path="/home/jose/Archivos/Proyecto 1 [FASE 1]/Archivo de prueba.txt"*/
             string ruta = operacion.substr(operacion.find("=")+1, operacion.length() - 1);
             if(ruta[0]== '\"')
             {
