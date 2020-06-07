@@ -22,9 +22,13 @@ private:
      */
     char unit;
     /*
-     * Directorio en donde se creara la particio
+     * Directorio en donde se creara la particion
      */
     char *path;
+    /*
+     * Directorio para actualizar el raid
+    */
+    string raid_path;
     /*
      * Ajuste de la particion
      */
@@ -83,6 +87,10 @@ public:
     void setPath(char *path)
     {
         this->path = path;
+        string raid_path = path;
+        this->raid_path = raid_path.substr(0, raid_path.size()-5) + "_raid.disk";
+        cout << "RAIDP: " << raid_path << endl;
+
     }
 
     void setFit(char* fit)
@@ -138,7 +146,9 @@ public:
     char getFit()
     {
         if(this->fit==0)return'W';
-        return toupper(this->fit[0]);
+        char aux [2];
+        strcpy(aux,fit);
+        return toupper(aux[0]);
     }
 
     char getUnit()
@@ -185,13 +195,13 @@ public:
     /*
      * Metodo para crear particion
      */
-    void createPart(FILE *file){
+    void createPart(){
         switch (type) {
         case P:
             break;
         case E:
-            extendedPart(file,principal);
-
+            extendedPart(principal);
+            extendedPart(raid);
             break;
         case L:
             break;
@@ -206,9 +216,16 @@ public:
     /*
      * Método para crear partición extendida.
     */
-    void extendedPart(FILE *file, kink which)
+    void extendedPart(kink which)
     {
+        FILE *file;
+        if(which == principal){file = fopen(path,"rb+");}
+        else {
+            file = fopen(raid_path.c_str(),"rb+");
+        }
         MBR master;
+        fseek(file,0,SEEK_SET);
+        fread(&master,sizeof(MBR),1,file);
         bool extendida = false;
         for(int i = 0;i < 4;i++) //Ver si ya hay alguna extendida
         {
@@ -228,6 +245,7 @@ public:
                 {
                     partition=true;
                     partIndex= i;
+                    break;
                 }
             }
             if(partition)
@@ -235,22 +253,68 @@ public:
                 int bytes=0;
                 for(int i= 0; i < 4; i++)
                 {
-                if(master.mbr_partitions[i].part_status=='1')
-                {
-                    bytes = bytes + master.mbr_partitions[i].part_size;
-                }
+                    if(master.mbr_partitions[i].part_status=='1')
+                    {
+                        bytes = bytes + master.mbr_partitions[i].part_size;
+                    }
                 }
                 if( which==principal)
                 {
-                    printf("Espacio disponible: %i bytes", (master.mbr_tamano - bytes));
-                    printf("Espacio necesario: %i bytes", getSize());
+                    printf("Espacio disponible: %i bytes\n", (master.mbr_tamano - bytes));
+                    printf("Espacio necesario: %i bytes\n", getSize());
                 }
                 bool fitsIn = (master.mbr_tamano - bytes) >= getSize();
                 if(fitsIn)
                 {
-                    if(!doesExist(file, this->name))//Despúes de todas las validaciones se puede empezar.
+                    if(!doesExist(this->name,which))//Despúes de todas las validaciones se puede empezar.
                     {
+                        if(master.disk_fit == 'F')
+                        {
+                            // Seteando la metadata de la partición.
+                            if(partIndex ==0)
+                            {
+                                master.mbr_partitions[partIndex].part_start = sizeof (MBR);
+                            }
+                            else
+                            {
+                                master.mbr_partitions[partIndex].part_start = master.mbr_partitions[partIndex-1].part_start + master.mbr_partitions[partIndex-1].part_size;
+                            }
+                            master.mbr_partitions[partIndex].part_size = getSize();
+                            master.mbr_partitions[partIndex].part_status = '0';
+                            master.mbr_partitions[partIndex].part_type = 'E';
+                            master.mbr_partitions[partIndex].part_fit = getFit();
+                            strcpy(master.mbr_partitions[partIndex].part_name, this->name);
 
+                            // Guardamos el MBR actualizado
+                            fseek(file,0, SEEK_SET);
+                            fwrite(&master,sizeof (MBR),1,file);
+
+                            // Guardamos la partición extendida
+                            fseek(file, master.mbr_partitions[partIndex].part_start, SEEK_SET);
+                            EBR eboot;
+                            eboot.part_fit = getFit();
+                            strcpy(eboot.part_name,this->name);
+                            eboot.part_next = -1;
+                            eboot.part_size = this->size;
+                            eboot.part_start = master.mbr_partitions[partIndex].part_start;
+                            eboot.part_status = '0';
+                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            int ebrSize = (int)sizeof (EBR);
+                            int top = getSize() - ebrSize;
+                            char buff = '1';//Para llenar byte a byte
+                            for(int i = top; i > 0 ; i--)
+                            {
+                                fwrite(&buff,1,1,file);
+                            }
+                            switch (which) {
+                            case principal:
+                                printf("Partición creada con éxito.\n");
+                                break;
+                            case raid:
+                                printf("Respaldo actualizado.\n");
+                                break;
+                            }
+                        }
                     }
                     else
                     {
@@ -272,13 +336,23 @@ public:
         {
             printf("Partición extendida ya existe en este equipo.\n");
         }
+        fclose(file);
     }
 
     /*
      * Método para verificar que la partición no exista ya.
     */
-    bool doesExist(FILE *file,char* name)
+    bool doesExist(char* name, kink which)
     {
+        FILE *file;
+        if(which==principal)
+        {
+            file =fopen(path,"rb+");
+        }
+        else
+        {
+            file = fopen(raid_path.c_str(), "rb+");
+        }
         MBR master;
         fseek(file,0,SEEK_SET);
         fread(&master, sizeof (MBR), 1, file);
@@ -394,16 +468,24 @@ public:
     void run()
     {
         semantic();
-        char path_[200];
-        strcpy(path_, this->path);
-        FILE *file;
-        file = fopen(path, "rb+");
+        char path_[raid_path.size()+1];
+        raid_path.copy(path_, raid_path.size()+1);
+        path_[raid_path.size()] = '\0';
+        FILE *file = fopen(path, "rb+");
+        FILE *raidf = fopen(path_, "rb+");
+
         if(file == NULL)
         {
             printf("El disco al que intentas acceder no existe.\n");
         }
+        else if(raidf == NULL)
+        {
+            printf("El disco Raid es inaccesible.\n");
+        }
         else
         {
+            fclose(file);
+            fclose(raidf);
             switch (this->operation) {
             case delete_:
                 deletePart();
@@ -412,7 +494,7 @@ public:
                 modifyPart();
                 break;
             case create_:
-                createPart(file);
+                createPart();
                 break;
             default:
                 printf("No se ha podido establecer que acción desea hacer.\n");
@@ -421,3 +503,5 @@ public:
 
     }
 };
+
+// fdisk -path=/home/jose/d.disk -size=8 -unit=k -type=e -name=part1 -fit=FF

@@ -137,22 +137,28 @@ int MKDISK_::createDisk()
             }
             fwrite(&space, sizeof(space), 1, f);
         }
+        configureMaster();
+        fseek(f,0,SEEK_SET);
+        fwrite(&this->master, sizeof (MBR),1,f);
         fflush(f);
         fclose(f);
 
-        // Añadiendo MBR
-        configureMaster();
-        FILE *nF;
-        nF = fopen(pathTwice.c_str(),"rb+");
-        fseek(nF,0,SEEK_SET);
-        fwrite(&this->master, sizeof (MBR),1,nF);
-        fclose(nF);
-
-        // Creación de RAID 1
-        ifstream  original_disk(pathTwice, std::ios::binary);
-        string name_without_ext = pathTwice.substr(0, pathTwice.size()-5);
-        ofstream  dst(name_without_ext+"[RAID].disk",   std::ios::binary);
-        dst << original_disk.rdbuf();
+        // Creando RAID
+        string pathRaid = pathTwice.substr(0, pathTwice.size()-5) + "_raid.disk";
+        FILE* fr = fopen(pathRaid.c_str(),"wb");
+        for(int i = 0; i < sizeOfArray; ++i)
+        {
+            char space[1024];
+            if(i==0)
+            {
+                space[0] = '0';
+            }
+            fwrite(&space, sizeof(space), 1, fr);
+        }
+        fseek(fr,0,SEEK_SET);
+        fwrite(&this->master, sizeof (MBR),1,fr);
+        fflush(fr);
+        fclose(fr);
 
         //Mensaje para notificar.
         cout << "Disco creado con éxito." << endl;
@@ -188,7 +194,7 @@ string MKDISK_::toLowerString(string input)
 void MKDISK_::configureMaster()
 {
     // Seteando tamaño
-    master.mbr_tamano = getSize()/1024;
+    master.mbr_tamano = getSize()*1024;
 
     // Seteando fecha y hora
     time_t     now = time(0);
