@@ -13,7 +13,7 @@
 #include <MKDISK.h>
 #include <RMDISK.h>
 #include <FDISK.h>
-//#define YYSTYPE char *
+
 
 using namespace std;
 
@@ -145,7 +145,7 @@ RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath($5);rmdisk_->borrarDisco(
       | rmdisk guion path igual cadena_esp {rmdisk_->setPath($5);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
 ;
 
-FDISK: fdisk FDISKPS{fdisk_->createPart();printf("-------------\n");fdisk_ = new FDISK_();}
+FDISK: fdisk FDISKPS{fdisk_->run();printf("-------------\n");fdisk_ = new FDISK_();}
 ;
 
 FDISKPS: FDISKP
