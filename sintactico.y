@@ -14,6 +14,7 @@
 #include <MKDISK.h>
 #include <RMDISK.h>
 #include <FDISK.h>
+#include <REP.h>
 
 
 using namespace std;
@@ -26,6 +27,7 @@ extern FILE *yyin;
 MKDISK_* mkdisk_ = new MKDISK_();
 RMDISK_* rmdisk_ = new RMDISK_();
 FDISK_* fdisk_ = new FDISK_();
+REP_* rep_ = new REP_();
 string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
 void yyerror( const char *s)
@@ -193,19 +195,19 @@ EXEC: exec guion path igual ruta
     | exec guion path igual cadena_esp
 ;
 
-REP: rep REPPS
+REP: rep REPPS{rep_->run();std::cout << delimiter << std::endl;rep_ = new REP_();}
 ;
 
 REPPS: REPP
      | REPPS REPP
 ;
 
-REPP: guion path igual ruta
-    | guion path igual cadena_esp
-    | guion id igual id
-    | guion id igual cadena_esp
-    | guion name igual mbr
-    | guion name igual disk
+REPP: guion path igual ruta {rep_->setRuta($4);}
+    | guion path igual cadena_esp {rep_->setRuta($4);}
+    | guion id igual id {rep_->setId($4);}
+    | guion id igual cadena_esp {rep_->setId($4);}
+    | guion name igual mbr {rep_->setName($4);}
+    | guion name igual disk {rep_->setName($4);}
 ;
 %%
 
