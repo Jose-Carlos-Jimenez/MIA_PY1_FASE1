@@ -87,9 +87,8 @@ public:
     void setPath(char *path)
     {
         this->path = path;
-        string raid_path = path;
+        raid_path = path;
         this->raid_path = raid_path.substr(0, raid_path.size()-5) + "_raid.disk";
-        cout << "RAIDP: " << raid_path << endl;
 
     }
 
@@ -315,6 +314,121 @@ public:
                                 break;
                             }
                         }
+                        else if(master.disk_fit == 'B')
+                        {
+                            int best = partIndex;
+                            for(int i = 0; i < 4; i++){//Calculo de la mejor posición
+                                if(master.mbr_partitions[i].part_start == -1 || (master.mbr_partitions[i].part_status == '1' && master.mbr_partitions[i].part_size>=getSize())){
+                                    if(i != partIndex){
+                                        if(master.mbr_partitions[i].part_size < master.mbr_partitions[best].part_size ){
+                                            best = i;
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Seteando la metadata de la partición.
+                            if(best ==0)
+                            {
+                                master.mbr_partitions[best].part_start = sizeof (MBR);
+                            }
+                            else
+                            {
+                                master.mbr_partitions[best].part_start = master.mbr_partitions[partIndex-1].part_start + master.mbr_partitions[partIndex-1].part_size;
+                            }
+                            master.mbr_partitions[best].part_size = getSize();
+                            master.mbr_partitions[best].part_status = '0';
+                            master.mbr_partitions[best].part_type = 'E';
+                            master.mbr_partitions[best].part_fit = getFit();
+                            strcpy(master.mbr_partitions[best].part_name, this->name);
+                            // Guardamos el MBR actualizado
+                            fseek(file,0, SEEK_SET);
+                            fwrite(&master,sizeof (MBR),1,file);
+
+                            // Guardamos la partición extendida
+                            fseek(file, master.mbr_partitions[best].part_start, SEEK_SET);
+                            EBR eboot;
+                            eboot.part_fit = getFit();
+                            strcpy(eboot.part_name,this->name);
+                            eboot.part_next = -1;
+                            eboot.part_size = this->size;
+                            eboot.part_start = master.mbr_partitions[best].part_start;
+                            eboot.part_status = '0';
+                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            int ebrSize = (int)sizeof (EBR);
+                            int top = getSize() - ebrSize;
+                            char buff = '1';//Para llenar byte a byte
+                            for(int i = top; i > 0 ; i--)
+                            {
+                                fwrite(&buff,1,1,file);
+                            }
+                            switch (which) {
+                            case principal:
+                                printf("Partición creada con éxito.\n");
+                                break;
+                            case raid:
+                                printf("Respaldo actualizado.\n");
+                                break;
+                            }
+                        }
+                        else if(master.disk_fit =='W')
+                        {
+                            int  worst= partIndex;
+                            for(int i = 0; i < 4; i++){
+                                if(master.mbr_partitions[i].part_start == -1 || (master.mbr_partitions[i].part_status == '1' && master.mbr_partitions[i].part_size>=getSize())){
+                                    if(i != partIndex){
+                                        if(master.mbr_partitions[worst].part_size < master.mbr_partitions[i].part_size){
+                                            worst= i;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            // Seteando la metadata de la partición.
+                            if(worst ==0)
+                            {
+                                master.mbr_partitions[worst].part_start = sizeof (MBR);
+                            }
+                            else
+                            {
+                                master.mbr_partitions[worst].part_start = master.mbr_partitions[partIndex-1].part_start + master.mbr_partitions[partIndex-1].part_size;
+                            }
+                            master.mbr_partitions[worst].part_size = getSize();
+                            master.mbr_partitions[worst].part_status = '0';
+                            master.mbr_partitions[worst].part_type = 'E';
+                            master.mbr_partitions[worst].part_fit = getFit();
+                            strcpy(master.mbr_partitions[worst].part_name, this->name);
+                            // Guardamos el MBR actualizado
+                            fseek(file,0, SEEK_SET);
+                            fwrite(&master,sizeof (MBR),1,file);
+
+                            // Guardamos la partición extendida
+                            fseek(file, master.mbr_partitions[worst].part_start, SEEK_SET);
+                            EBR eboot;
+                            eboot.part_fit = getFit();
+                            strcpy(eboot.part_name,this->name);
+                            eboot.part_next = -1;
+                            eboot.part_size = this->size;
+                            eboot.part_start = master.mbr_partitions[worst].part_start;
+                            eboot.part_status = '0';
+                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            int ebrSize = (int)sizeof (EBR);
+                            int top = getSize() - ebrSize;
+                            char buff = '1';//Para llenar byte a byte
+                            for(int i = top; i > 0 ; i--)
+                            {
+                                fwrite(&buff,1,1,file);
+                            }
+                            switch (which) {
+                            case principal:
+                                printf("Partición creada con éxito.\n");
+                                break;
+                            case raid:
+                                printf("Respaldo actualizado.\n");
+                                break;
+                            }
+                        }
                     }
                     else
                     {
@@ -411,7 +525,23 @@ public:
 
         if(operation == create_)
         {
-
+            //size, path y name obligatorios.
+            if(size !=0 && path !=0 && name!=0)
+            {
+                if(add ==0 && _delete == 0)
+                {
+                }
+                else
+                {
+                    correct = false;
+                    cout << "Los parámetros add y delete no son compatibles." << endl;
+                }
+            }
+            else
+            {
+                correct = false;
+                cout << "Al crear los parametros obligatorios son size, path y name." << endl;
+            }
         }
         else if(operation == delete_)
         {
