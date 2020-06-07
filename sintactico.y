@@ -8,6 +8,7 @@
 #include <QString>
 #include <QDebug>
 #include <iostream>
+#include <string.h>
 #include <scanner.h>
 #include <typeinfo>
 #include <MKDISK.h>
@@ -25,6 +26,7 @@ extern FILE *yyin;
 MKDISK_* mkdisk_ = new MKDISK_();
 RMDISK_* rmdisk_ = new RMDISK_();
 FDISK_* fdisk_ = new FDISK_();
+string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
 void yyerror( const char *s)
 {
@@ -124,7 +126,7 @@ INSTRUCCION: MKDISK
            | EXEC
 ;
 
-MKDISK:mkdisk MKDISKPS {mkdisk_->printMk();printf("-------------\n");mkdisk_ = new MKDISK_();}
+MKDISK:mkdisk MKDISKPS {mkdisk_->printMk();std::cout << delimiter << std::endl;;mkdisk_ = new MKDISK_();}
 ;
 
 MKDISKPS: MKDISKPS MKDISKP
@@ -141,11 +143,11 @@ MKDISKP: guion size igual numero {mkdisk_->setSize($4);}
        | guion path igual cadena_esp {mkdisk_->setPath($4);}
 ;
 
-RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath($5);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
-      | rmdisk guion path igual cadena_esp {rmdisk_->setPath($5);rmdisk_->borrarDisco();printf("-------------\n"); rmdisk_ = new RMDISK_();}
+RMDISK: rmdisk guion path igual ruta {rmdisk_->setPath($5);rmdisk_->borrarDisco();std::cout << delimiter << std::endl; rmdisk_ = new RMDISK_();}
+      | rmdisk guion path igual cadena_esp {rmdisk_->setPath($5);rmdisk_->borrarDisco();std::cout << delimiter << std::endl; rmdisk_ = new RMDISK_();}
 ;
 
-FDISK: fdisk FDISKPS{fdisk_->run();printf("-------------\n");fdisk_ = new FDISK_();}
+FDISK: fdisk FDISKPS{fdisk_->run();std::cout << delimiter << std::endl;fdisk_ = new FDISK_();}
 ;
 
 FDISKPS: FDISKP

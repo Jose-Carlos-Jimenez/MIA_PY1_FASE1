@@ -97,10 +97,6 @@ void MKDISK_::setCorrect()
 
 void MKDISK_::printMk()
 {
-    printf("Ruta: %s\n", this->path);
-    printf("Fit: %c\n", this->fit_[0]);
-    printf("Size: %i\n", this->size);
-    printf("Unidad: %s\n", this->unit.c_str());
     createDisk();
 }
 

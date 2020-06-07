@@ -72,7 +72,7 @@ void parsear()
             YY_BUFFER_STATE bufferState = yy_scan_string(input.c_str());
             if(yyparse()==0)
             {
-                qDebug() << "Analizado con éxito";
+                qDebug() << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Operaciones terminadas >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
             }
             else
             {
@@ -86,7 +86,7 @@ void parsear()
             YY_BUFFER_STATE bufferState = yy_scan_string(qString.toUtf8().constData());
             if(yyparse()==0)
             {
-                qDebug() << "Analizado con éxito";
+                qDebug() << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Operaciones terminadas >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>";
             }
             else
             {
