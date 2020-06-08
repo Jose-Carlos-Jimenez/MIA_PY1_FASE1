@@ -477,7 +477,7 @@ public:
                             eboot.part_size = this->size;
                             eboot.part_start = master.mbr_partitions[partIndex].part_start;
                             eboot.part_status = '0';
-                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            fwrite(&eboot, sizeof (EBR),1,file);
                             int ebrSize = (int)sizeof (EBR);
                             int top = getSize() - ebrSize;
                             char buff = '1';//Para llenar byte a byte
@@ -515,6 +515,7 @@ public:
                             master.mbr_partitions[best].part_type = 'E';
                             master.mbr_partitions[best].part_fit = getFit();
                             strcpy(master.mbr_partitions[best].part_name, this->name);
+
                             // Guardamos el MBR actualizado
                             fseek(file,0, SEEK_SET);
                             fwrite(&master,sizeof (MBR),1,file);
@@ -528,7 +529,7 @@ public:
                             eboot.part_size = this->size;
                             eboot.part_start = master.mbr_partitions[best].part_start;
                             eboot.part_status = '0';
-                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            fwrite(&eboot, sizeof (EBR),1,file);
                             int ebrSize = (int)sizeof (EBR);
                             int top = getSize() - ebrSize;
                             char buff = '1';//Para llenar byte a byte
@@ -578,7 +579,7 @@ public:
                             eboot.part_size = this->size;
                             eboot.part_start = master.mbr_partitions[worst].part_start;
                             eboot.part_status = '0';
-                            fwrite(&eboot.part_name, sizeof (EBR),1,file);
+                            fwrite(&eboot, sizeof (EBR),1,file);
                             int ebrSize = (int)sizeof (EBR);
                             int top = getSize() - ebrSize;
                             char buff = '1';//Para llenar byte a byte
@@ -813,11 +814,9 @@ public:
     void DebugBinario()
     {
         FILE *file = fopen(path, "rb+");
-        cout << "Debugueando..." << endl;
         fseek(file,0,SEEK_SET);
         MBR master;
         fread(&master,sizeof (MBR),1,file);
-        cout << master.mbr_fecha_creacion << endl;
         fclose(file);
     }
 };

@@ -61,6 +61,7 @@ public:
             this->correct = true;
         }
     }
+    
     /*
      * Método para ejecutar
     */
@@ -226,5 +227,13 @@ public:
             cout << "El disco no existe." << endl;
         }
 
+    }
+
+    /*
+     * Método para generar el reporte del disco
+    */
+    void reportDISK()
+    {
+        
     }
 };
