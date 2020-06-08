@@ -61,6 +61,7 @@ public:
             this->correct = true;
         }
     }
+
     /*
      * Método para ejecutar
     */
@@ -76,7 +77,7 @@ public:
             }
             else if(toLowerString(nameS) == "disk")
             {
-                //reportDisk();
+                reportDISK();
             }
         }
         else
@@ -101,7 +102,7 @@ public:
     */
     void reportMBR()
     {
-        string dir = this->getRuta();
+        string dir = this->getRuta();//Debo cambiar esta ruta por la que encuentre de la partición montada
         FILE *f;
         if((f = fopen(dir.c_str(),"r")))
         {
@@ -184,8 +185,8 @@ public:
                         dot+= "\ntbl_";
                         dot+= to_string(ext);
                         dot+= "[shape=box, label=<\n ";
-                        dot+= "<TABLE border=\'0\' cellborder=\'1\' cellspacing=\'0\'  width=\'300\' height=\'160\' >\n ";
-                        dot+= "<tr>  <td width=\'150\'><b>Nombre</b></td> <td width=\'150\'><b>Valor</b></td>  </tr>\n";
+                        dot+= "<TABLE border='0' cellborder='1' cellspacing='0'  width='300' height='160' >\n ";
+                        dot+= "<tr>  <td width='150'><b>Nombre</b></td> <td width='150'><b>Valor</b></td>  </tr>\n";
                         char status[3];
                         if(ebr.part_status == '0')strcpy(status,"0");
                         else if(ebr.part_status == '2')strcpy(status,"2");
@@ -220,11 +221,136 @@ public:
             fclose(nuevo);
             string comando = "dot reporte_mbr.txt -o reporte_mbr.png -Tpng -Gcharset=utf8";
             system(comando.c_str());
+            cout << "Reporte del MBR ha sido creado." << endl;
         }
         else
         {
             cout << "El disco no existe." << endl;
         }
 
+    }
+
+    /*
+     * Método para generar el reporte del disco
+    */
+    void reportDISK()
+    {
+        string pathCopy = this->getRuta();//Debo de ponerle la path obtenida
+        FILE *fp;
+        if((fp = fopen(pathCopy.c_str(),"r"))){
+            char dest[5000000];
+            sprintf(strchr(dest,'\0'),"digraph G{\n\n");
+            sprintf(strchr(dest,'\0'), "tbl[\nshape=box\nlabel=<\n");
+            sprintf(strchr(dest,'\0'), "<table border='0' cellborder='2' width='500' height=\"180\">\n");
+            sprintf(strchr(dest,'\0'), "<tr>\n");
+            sprintf(strchr(dest,'\0'), "<td height='200' width='100'> MBR </td>\n");
+            MBR master;
+            fseek(fp,0,SEEK_SET);
+            fread(&master,sizeof(MBR),1,fp);
+            int size = master.mbr_tamano;
+            double used = 0;
+            for(int i = 0; i < 4; i++){
+                int partSize = master.mbr_partitions[i].part_size;
+                if(master.mbr_partitions[i].part_start > -1){
+                    double real = (partSize*100)/size;
+                    double width = 200;
+                    used += real;
+                    if(master.mbr_partitions[i].part_status != '1'){
+                        if(master.mbr_partitions[i].part_type == 'E')//
+                        {
+                            EBR ebr;
+                            sprintf(strchr(dest,'\0'),"<td  height='200' width='100'>\n     <table border='0'  height='200' WIDTH='100' cellborder='1'>\n");
+                            sprintf(strchr(dest,'\0'),"<tr>  <td height='60' colspan='15'>EXTENDIDA</td>  </tr>\n     <tr>\n");
+                            fseek(fp, master.mbr_partitions[i].part_start,SEEK_SET);
+                            fread(&ebr,sizeof(EBR),1,fp);
+                            if(ebr.part_size != 0){
+                                fseek(fp, master.mbr_partitions[i].part_start,SEEK_SET);
+                                while(fread(&ebr,sizeof (EBR),1,fp)!=0 && (ftell(fp) < (master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size))){
+                                    double parcial = ebr.part_size;
+                                    double porcentaje_real = (parcial*100)/size;
+                                    if(porcentaje_real!=0){
+                                        if(ebr.part_status != '1'){
+                                            sprintf(strchr(dest,'\0'), "<td height='200' width='75'>EBR</td>\n");
+                                            sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LOGICA<br/>Ocupado: %.1f%c</td>\n",porcentaje_real,'%');
+                                        }else{
+                                            sprintf(strchr(dest,'\0'), "      <td height='200' width='150'>LIBRE <br/> Ocupado: %.1f%c</td>\n",porcentaje_real,'%');
+                                        }
+                                        if(ebr.part_next==-1){
+                                            parcial = (master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size) - (ebr.part_start + ebr.part_size);
+                                            porcentaje_real = (parcial*100)/size;
+                                            if(porcentaje_real!=0){
+                                                sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LIBRE <br/> Ocupado: %.1f%c </td>\n",porcentaje_real,'%');
+                                            }
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            fseek(fp,ebr.part_next,SEEK_SET);
+                                        }
+                                    }
+                                }
+                            }else{
+                                sprintf(strchr(dest,'\0'),"     <td height='140'> Utilizado: %.1f%c</td>",real,'%');
+                            }
+                            sprintf(strchr(dest,'\0'),"     </tr>\n     </table>\n     </td>\n");
+
+                            if(i!=3){
+                                int p1 = master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size;
+                                int p2 = master.mbr_partitions[i+1].part_start;
+                                if(master.mbr_partitions[i+1].part_start != -1){
+                                    if((p2-p1)!=0){
+                                        int fragmentacion = p2-p1;
+                                        double real = (fragmentacion*100)/size;
+                                        double porcentaje_aux = 200;
+                                        sprintf(strchr(dest,'\0'),"     <td height='200' width='%.1f'>LIBRE<br/> Utilizado: %.1f%c</td>\n",porcentaje_aux,real,'%');
+                                    }
+                                }
+                            }else{
+                                int p1 = master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size;
+                                int mbr_size = size + (int)sizeof(MBR);
+                                if((mbr_size-p1)!=0){
+                                    double libre = (mbr_size - p1) + sizeof(MBR);
+                                    double real = (libre*100)/size;
+                                    double porcentaje_aux = 100;
+                                    sprintf(strchr(dest,'\0'), "     <td height='200' width='%.1f'>LIBRE<br/> Utilizado:: %.1f%c</td>\n",porcentaje_aux, real, '%');
+                                }
+                            }
+                        }else{
+                            sprintf(strchr(dest,'\0'), "<td height='200' width='%.1f'>PRIMARIA <br/> Utilizado:: %.1f%c</td>\n",width,real,'%');
+                            if(i==3){
+                                int suposed = master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size;
+                                int mbr_size = size + (int)sizeof(MBR);
+                                if((mbr_size-suposed)!=0){
+                                    double free = (mbr_size - suposed) + sizeof(MBR);
+                                    double real = (free*100)/size;
+                                    double aux = real*4;
+                                    sprintf(strchr(dest,'\0'), "<td height='200' width='%.1f'>LIBRE<br/> Utilizado:: %.1f%c</td>\n",aux, real, '%');
+                                }
+                            }else{
+                                int suposed = master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size;
+                                int exact = master.mbr_partitions[i+1].part_start;
+                                if(master.mbr_partitions[i+1].part_start != -1){
+                                    if((exact-suposed)!=0){
+                                        int fragment = exact-suposed;
+                                        double _real = (fragment*100)/size;
+                                        double aux = (_real*500)/100;
+                                        sprintf(strchr(dest,'\0'),"<td height='200' width='%.1f'>LIBRE<br/> Utilizado:: %.1f%c</td>\n",aux,_real,'%');
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        sprintf(strchr(dest,'\0'),"     <td height='200' width='%.1f'>LIBRE <br/> Utilizado:: %.1f%c</td>\n",width,real,'%');
+                    }
+                }
+            }
+            sprintf(strchr(dest,'\0'),"</tr> \n     </table>        \n>];\n\n}");
+            FILE *nuevo = fopen("reporte_disk.txt","w");
+            fprintf(nuevo,"%s\n",dest);
+            fclose(nuevo);
+            string comando = "dot reporte_disk.txt -o reporte_disk.png -Tpng -Gcharset=utf8";
+            system(comando.c_str());
+            cout << "Reporte del DISK ha sido creado." << endl;
+        }
     }
 };
