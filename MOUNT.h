@@ -70,14 +70,14 @@ void MOUNT_::setLetter(char c)
 
 char MOUNT_::getLetter()
 {
-    char a = 'a';
+    char a = 'a' - 1;
     if(mounted->size() == 0){
         setLetter('a');
         return 'a';
     }
     QList<MOUNT_>::iterator i;
     i+3;
-    for(i=mounted->begin(); i!=mounted->end(); i++ )
+    for(i=mounted->begin(); i!=mounted->end(); i++)
     {
         if(i->path != this->path)
         {
