@@ -49,6 +49,8 @@ public:
     void semantic();
     void run();
     int partIndex();
+    void mountPartition();
+    bool isMounted();
 };
 
 extern QList<MOUNT_> *mounted;
@@ -117,6 +119,14 @@ void MOUNT_::semantic()
     {
         correct = true;
     }
+    if(this->path == "")
+    {
+        cout << "El parámetro -path es obligatorio." << endl;
+    }
+    if(this->name == "")
+    {
+        cout << "El parámetro -name es obligatorio." << endl;
+    }
 }
 
 void MOUNT_::run()
@@ -125,7 +135,7 @@ void MOUNT_::run()
     if(this->correct)
     {
         cout <<"Intentando montar: "<< this->getId() << endl;
-        mounted->append(*this);
+        mountPartition();
     }
     else
     {
@@ -143,6 +153,7 @@ int MOUNT_::partIndex()
         for(int i = 0; i < 4; i++){
             if(masterboot.mbr_partitions[i].part_status != '1'){
                 if(strcmp(masterboot.mbr_partitions[i].part_name,name.c_str()) == 0){
+                    fclose(fp);
                     return i;
                 }
             }
@@ -150,3 +161,61 @@ int MOUNT_::partIndex()
     }
     return -1;
 }
+
+void MOUNT_::mountPartition()
+{
+    int indexOfPart = partIndex();
+    if(indexOfPart != -1)
+    {
+        //Abrir el archivo
+        FILE*file= fopen(this->path.c_str(),"rb");
+        MBR master;
+        fseek(file,0,SEEK_SET);
+        fread(&master,sizeof (MBR),1,file);
+
+        //Cambiar su status
+        master.mbr_partitions[indexOfPart].part_status = '2';
+
+        //Reescribirlo
+        fseek(file,0, SEEK_SET);
+        fwrite(&master,sizeof (MBR),1,file);
+        fseek(file,0,SEEK_SET);
+        fread(&master, sizeof (MBR),1,file);
+        fclose(file);
+
+        //Verificar si está montada
+        if(!isMounted())
+        {
+            //Insertar a la lista.
+            setId();
+            mounted->append(*this);
+            cout << "La partición " << this->id << " ha sido montada con éxito." << endl;
+        }
+        else
+        {
+            cout << "La partición ya ha sido montada." << endl;
+        }
+
+    }
+    else
+    {
+        //Puede ser una partición lógica.
+
+    }
+}
+
+bool MOUNT_::isMounted()
+{
+    QList<MOUNT_>::iterator i;
+    for(i = mounted->begin();i != mounted->end();i++)
+    {
+        if(i->path == this->path && i->name== this->name)
+        {
+            return  true;
+        }
+    }
+    return  false;
+}
+
+
+

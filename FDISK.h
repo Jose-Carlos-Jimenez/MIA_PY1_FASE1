@@ -206,6 +206,7 @@ public:
             break;
         case L:
             logicPart(principal);
+            logicPart(raid);
             break;
         case empty:
             printf("El tipo de partición no ha podido ser establecido, operación abortada.\n");
@@ -221,8 +222,12 @@ public:
     {
         // Abrir el MBR del disco para validar
         FILE *file;
-        if(which == principal){file = fopen(path,"rb+");}
-        else {
+        if(which == principal)
+        {
+            file = fopen(path,"rb+");
+        }
+        else
+        {
             file = fopen(raid_path.c_str(),"rb+");
         }
         MBR master;
@@ -287,7 +292,7 @@ public:
                         // Llenando el espacio reservado
                         char buff = '1';//Para llenar byte a byte
                         fseek(file,master.mbr_partitions[partIndex].part_start,SEEK_SET);
-                        for(int i = 0; i < bytes; i++){
+                        for(int i = 0; i < getSize(); i++){
                             fwrite(&buff,1,1,file);
                         }
                         printEnd(which);
@@ -388,6 +393,7 @@ public:
         {
             printf("Espacio insuficiente para esta partición en el disco.\n");
         }
+        fclose(file);
 
 
 
@@ -621,7 +627,9 @@ public:
     {
         FILE *file;
         MBR master;
-        if(which == principal){file = fopen(path,"rb+");}
+        if(which == principal){
+            file = fopen(path,"rb+");
+        }
         else {
             file = fopen(raid_path.c_str(),"rb+");
         }
@@ -671,6 +679,7 @@ public:
                             ebr.part_status = '0';//
                             ebr.part_start = ftell(file);//
                             fwrite(&ebr,sizeof (EBR),1, file);
+                            fseek(file,init,SEEK_SET);
                             fread(&ebr, sizeof (EBR),1, file);
                             printEnd(which);
                         }
@@ -695,8 +704,6 @@ public:
                             //Escribirla en memoria
                             fseek(file, init,SEEK_SET);
                             fwrite(&ebr,sizeof (EBR),1,file);
-                            fseek(file, init, SEEK_SET);
-                            fread(&ebr,sizeof (EBR),1, file);
                             printEnd(which);
                         }
                         else
@@ -719,6 +726,7 @@ public:
         {
             cout << "El disco no existe." << endl;
         }
+        fclose(file);
     }
     /*
      * Método para verificar que la partición no exista ya.
@@ -926,5 +934,3 @@ public:
         fclose(file);
     }
 };
-
-// fdisk -path=/home/jose/d.disk -size=8 -unit=k -type=e -name=part1 -fit=FF

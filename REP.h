@@ -104,7 +104,7 @@ public:
     {
         string dir = this->getRuta();//Debo cambiar esta ruta por la que encuentre de la partición montada
         FILE *f;
-        if((f = fopen(dir.c_str(),"r")))
+        if((f = fopen(dir.c_str(),"rb+")))
         {
             string dot = "digraph DISK_MBR{\n";
             dot+= "MBR[\n";
@@ -180,10 +180,10 @@ public:
                         dot+="subgraph cluster_";
                         dot+= to_string(index_ebr);
                         dot+= "{\n label=\"EBR_";
-                        dot+= to_string(ext);
+                        dot+= to_string(index_ebr);
                         dot+="\"\n";
                         dot+= "\ntbl_";
-                        dot+= to_string(ext);
+                        dot+= to_string(index_ebr);
                         dot+= "[shape=box, label=<\n ";
                         dot+= "<TABLE border='0' cellborder='1' cellspacing='0'  width='300' height='160' >\n ";
                         dot+= "<tr>  <td width='150'><b>Nombre</b></td> <td width='150'><b>Valor</b></td>  </tr>\n";
@@ -216,10 +216,11 @@ public:
                 }
             }
             dot+="}\n";
+            fclose(f);
             FILE *nuevo = fopen("reporte_mbr.txt","w");
             fprintf(nuevo,"%s\n",dot.c_str());
             fclose(nuevo);
-            string comando = "dot reporte_mbr.txt -o reporte_mbr.png -Tpng -Gcharset=utf8";
+            string comando = "dot reporte_mbr.txt -o reporte_mbr.png -Tpng";
             system(comando.c_str());
             cout << "Reporte del MBR ha sido creado." << endl;
         }
@@ -348,7 +349,7 @@ public:
             FILE *nuevo = fopen("reporte_disk.txt","w");
             fprintf(nuevo,"%s\n",dest);
             fclose(nuevo);
-            string comando = "dot reporte_disk.txt -o reporte_disk.png -Tpng -Gcharset=utf8";
+            string comando = "dot reporte_disk.txt -o reporte_disk.png -Tpng";
             system(comando.c_str());
             cout << "Reporte del DISK ha sido creado." << endl;
         }
