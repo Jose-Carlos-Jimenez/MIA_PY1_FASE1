@@ -209,8 +209,8 @@ REPPS: REPP
      | REPPS REPP
 ;
 
-REPP: guion path igual ruta {rep_->setRuta($4);}
-    | guion path igual cadena_esp {rep_->setRuta($4);}
+REPP: guion path igual ruta {rep_->setPath($4);}
+    | guion path igual cadena_esp {rep_->setPath($4);}
     | guion id igual id {rep_->setId($4);}
     | guion id igual cadena_esp {rep_->setId($4);}
     | guion name igual mbr {rep_->setName($4);}

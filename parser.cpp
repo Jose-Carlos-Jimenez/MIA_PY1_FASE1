@@ -1695,13 +1695,13 @@ yyreduce:
 
   case 60:
 #line 212 "sintactico.y" /* yacc.c:1646  */
-    {rep_->setRuta((yyvsp[0].STRING));}
+    {rep_->setPath((yyvsp[0].STRING));}
 #line 1700 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
 #line 213 "sintactico.y" /* yacc.c:1646  */
-    {rep_->setRuta((yyvsp[0].STRING));}
+    {rep_->setPath((yyvsp[0].STRING));}
 #line 1706 "parser.cpp" /* yacc.c:1646  */
     break;
 

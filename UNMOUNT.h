@@ -63,15 +63,12 @@ void UNMOUNT_::unmountPart()
         j++;
         if(i->getId() == this->id)
         {
-            cout << "Se encontró: " << this->id << endl;
+            cout << "Se encontró: " << i->getId() << endl;
+            mounted->erase(i);
             break;
         }
     }
-    if(j!=-1)
-    {
-        mounted->removeAt(j);
-    }
-    else
+    if(j==-1)
     {
         cout << "La partición que deseas montar no se encuentra montada."<< endl;
     }
