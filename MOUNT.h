@@ -51,6 +51,7 @@ public:
     void semantic();
     void run();
     int partIndex();
+    int LogicPartIndex();
     void mountPartition();
     bool isMounted();
 };
@@ -75,9 +76,8 @@ char MOUNT_::getLetter()
         return 'a';
     }
     QList<MOUNT_>::iterator i;
-    i = mounted->begin();
     i+3;
-    for(; i!=mounted->end()-1; i++ )
+    for(i=mounted->begin(); i!=mounted->end(); i++ )
     {
         if(i->path != this->path)
         {
@@ -141,7 +141,7 @@ void MOUNT_::run()
     semantic();
     if(this->correct)
     {
-        cout <<"Intentando montar: "<< this->confId() << endl;
+        cout <<"Intentando montar: "<< this->getId() << endl;
         mountPartition();
     }
     else
@@ -169,13 +169,47 @@ int MOUNT_::partIndex()
     return -1;
 }
 
+int MOUNT_::LogicPartIndex()
+{
+    FILE *file;
+    if((file = fopen(this->path.c_str(),"r+b"))){
+        // Buscar la partición extendida del disco
+        int extIndex = -1;
+        MBR master;
+        fseek(file,0,SEEK_SET);
+        fread(&master,sizeof(MBR),1,file);
+        for(int i = 0; i < 4; i++){
+            if(master.mbr_partitions[i].part_type == 'E'){
+                extIndex = i;
+                break;
+            }
+        }
+        if(extIndex != -1){
+            // Buscar si existe una lógica en el disco
+            EBR ebr;
+            fseek(file, master.mbr_partitions[extIndex].part_start,SEEK_SET);
+            fread(&ebr,sizeof (EBR),1,file);
+            fseek(file, master.mbr_partitions[extIndex].part_start,SEEK_SET);
+            while(fread(&ebr,sizeof(EBR),1,file)!=0 && (ftell(file) < master.mbr_partitions[extIndex].part_start + master.mbr_partitions[extIndex].part_size)){
+                if(strcmp(ebr.part_name, this->getName().c_str()) == 0){
+                    return (ftell(file) - sizeof(EBR));
+                }
+                if(ebr.part_next == -1)break;
+                else fseek(file,ebr.part_next,SEEK_SET);
+            }
+        }
+        fclose(file);
+    }
+    return -1;
+}
+
 void MOUNT_::mountPartition()
 {
     int indexOfPart = partIndex();
     if(indexOfPart != -1)
     {
         //Abrir el archivo
-        FILE*file= fopen(this->path.c_str(),"rb");
+        FILE*file= fopen(this->path.c_str(),"r+b");
         MBR master;
         fseek(file,0,SEEK_SET);
         fread(&master,sizeof (MBR),1,file);
@@ -206,7 +240,44 @@ void MOUNT_::mountPartition()
     }
     else
     {
-        //Puede ser una partición lógica.
+        int indexLog = this->LogicPartIndex();
+        if(indexLog != -1)
+        {
+            FILE * aux;
+            if((aux = fopen(getPath().c_str(),"r+b")))
+            {
+                //Leer el ebr
+                EBR ebr;
+                fseek(aux, indexLog, SEEK_SET);
+                fread(&ebr, sizeof(EBR),1,aux);
+
+                //Cambiar su estado a montado.
+                ebr.part_status = '2';
+                fseek(aux,indexLog,SEEK_SET);
+                fwrite(&ebr,sizeof(EBR),1, aux);
+                fclose(aux);
+                if(!isMounted())
+                {
+                    //Insertar a la lista.
+                    setId();
+                    mounted->append(*this);
+                    cout << "La partición " << this->id << " ha sido montada con éxito." << endl;
+                }
+                else
+                {
+                    cout << "La partición ya ha sido montada." << endl;
+                }
+
+            }
+            else
+            {
+                cout << "El disco de la partición no existe." << endl;
+            }
+        }
+        else
+        {
+            cout << "El disco que desea montar no existe."  << endl;
+        }
 
     }
 }
