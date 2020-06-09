@@ -205,6 +205,7 @@ public:
             extendedPart(raid);
             break;
         case L:
+            logicPart(principal);
             break;
         case empty:
             printf("El tipo de partición no ha podido ser establecido, operación abortada.\n");
@@ -474,7 +475,7 @@ public:
                             eboot.part_fit = getFit();
                             strcpy(eboot.part_name,this->name);
                             eboot.part_next = -1;
-                            eboot.part_size = this->size;
+                            eboot.part_size = 0;
                             eboot.part_start = master.mbr_partitions[partIndex].part_start;
                             eboot.part_status = '0';
                             fwrite(&eboot, sizeof (EBR),1,file);
@@ -526,7 +527,7 @@ public:
                             eboot.part_fit = getFit();
                             strcpy(eboot.part_name,this->name);
                             eboot.part_next = -1;
-                            eboot.part_size = this->size;
+                            eboot.part_size = 0;
                             eboot.part_start = master.mbr_partitions[best].part_start;
                             eboot.part_status = '0';
                             fwrite(&eboot, sizeof (EBR),1,file);
@@ -576,7 +577,7 @@ public:
                             eboot.part_fit = getFit();
                             strcpy(eboot.part_name,this->name);
                             eboot.part_next = -1;
-                            eboot.part_size = this->size;
+                            eboot.part_size = 0;
                             eboot.part_start = master.mbr_partitions[worst].part_start;
                             eboot.part_status = '0';
                             fwrite(&eboot, sizeof (EBR),1,file);
@@ -613,6 +614,112 @@ public:
         fclose(file);
     }
 
+    /*
+     * Método para crear una partición lógica.
+    */
+    void logicPart(kink which)
+    {
+        FILE *file;
+        MBR master;
+        if(which == principal){file = fopen(path,"rb+");}
+        else {
+            file = fopen(raid_path.c_str(),"rb+");
+        }
+        if(file != NULL)
+        {
+            fseek(file,0,SEEK_SET);
+            fread(&master,sizeof (MBR),1,file);
+            int extIndex;
+            bool hayExtendida =false;
+            for(int i =0;i<4;i++)
+            {
+                if(master.mbr_partitions[i].part_type == 'E')
+                {
+                    hayExtendida = true;
+                    extIndex = i;
+                }
+            }
+            if(!doesExist(this->name,which))
+            {
+                if(hayExtendida)
+                {
+                    EBR ebr;
+                    int init = master.mbr_partitions[extIndex].part_start;//  Voy al inicio de la partición extendida
+                    fseek(file,init, SEEK_SET);
+                    fread(&ebr, sizeof (EBR),1,file);//Leo el EBR inicial que siempre se crea
+                    if(ebr.part_size != 0) // Cuando no sea la primera, el EBR inicial apunta a -1
+                    {
+                        while((ebr.part_next != -1) && (ftell(file) < (master.mbr_partitions[extIndex].part_size + master.mbr_partitions[extIndex].part_start))){
+                            fseek(file,ebr.part_next,SEEK_SET);
+                            fread(&ebr,sizeof(EBR),1,file);
+                        }
+                        int needed=ebr.part_size + ebr.part_start +getSize();
+                        cout << "Espacio necesario para la partición: " << to_string(needed) << " bytes" << endl;
+                        bool fitIn = needed <= (master.mbr_partitions[extIndex].part_size + master.mbr_partitions[extIndex].part_start);
+                        if(fitIn)
+                        {
+                            //Seteamos los datos del EBR actualizados.
+                            ebr.part_next = ebr.part_start + ebr.part_size;
+                            fseek(file,ftell(file)-sizeof (EBR),SEEK_SET);
+                            fwrite(&ebr, sizeof(EBR),1 ,file);
+
+                            fseek(file,ebr.part_start + ebr.part_size, SEEK_SET);
+                            ebr.part_fit = getFit();//
+                            strcpy(ebr.part_name, this->name);//
+                            ebr.part_size = getSize();//
+                            ebr.part_next = -1;//
+                            ebr.part_status = '0';//
+                            ebr.part_start = ftell(file);//
+                            fwrite(&ebr,sizeof (EBR),1, file);
+                            fread(&ebr, sizeof (EBR),1, file);
+                            printEnd(which);
+                        }
+                        else
+                        {
+                            cout << "Espacio insuficiente en la partición extendida." << endl;
+                        }
+                    }
+                    else/*Caso especial en el que sea la partición inicial.*/
+                    {
+                        cout << "Espacio necesario para la partición " << to_string(getSize()) << endl;
+                        if(master.mbr_partitions[extIndex].part_size > getSize())//Si cabe la partición lógica en la totalidad
+                        {
+                            // Seteando datos
+                            ebr.part_fit = getFit();
+                            strcpy(ebr.part_name,this->name);
+                            ebr.part_next = -1;
+                            ebr.part_size = getSize();
+                            ebr.part_start = init;
+                            ebr.part_status = '0';
+
+                            //Escribirla en memoria
+                            fseek(file, init,SEEK_SET);
+                            fwrite(&ebr,sizeof (EBR),1,file);
+                            fseek(file, init, SEEK_SET);
+                            fread(&ebr,sizeof (EBR),1, file);
+                            printEnd(which);
+                        }
+                        else
+                        {
+                            cout << "Espacio insuficiente en la partición extendida." << endl;
+                        }
+                    }
+                }
+                else
+                {
+                    cout << "Se necesita una partición extendida para montar una lógica." << endl;
+                }
+            }
+            else
+            {
+                cout << "La partición que deseas crear ya existe." << endl;
+            }
+        }
+        else
+        {
+            cout << "El disco no existe." << endl;
+        }
+    }
     /*
      * Método para verificar que la partición no exista ya.
     */
@@ -803,7 +910,6 @@ public:
             default:
                 printf("No se ha podido establecer que acción desea hacer.\n");
             }
-            DebugBinario();
         }
 
     }

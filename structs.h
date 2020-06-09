@@ -34,3 +34,4 @@ public:
     char disk_fit;
     Partition mbr_partitions[4];
 };
+

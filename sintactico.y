@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <QString>
-#include <QDebug>
 #include <iostream>
 #include <string.h>
 #include <scanner.h>
@@ -15,6 +13,9 @@
 #include <RMDISK.h>
 #include <FDISK.h>
 #include <REP.h>
+#include <MOUNT.h>
+#include <QList>
+
 
 
 using namespace std;
@@ -23,11 +24,14 @@ extern int yylex(void);
 extern char *yytext;
 extern  int SourceLine;
 extern FILE *yyin;
+extern QList<MOUNT_>* mounted = new QList<MOUNT_>();
 
 MKDISK_* mkdisk_ = new MKDISK_();
 RMDISK_* rmdisk_ = new RMDISK_();
 FDISK_* fdisk_ = new FDISK_();
 REP_* rep_ = new REP_();
+MOUNT_* mount_ = new MOUNT_();
+
 string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
 void yyerror( const char *s)
@@ -175,16 +179,17 @@ FDISKP:   guion size igual numero {fdisk_->setSize($4);}
         | guion add igual numero_negativo {fdisk_->setAdd($4);}
 ;
 
-MOUNT: mount MOUNTPS;
+MOUNT: mount MOUNTPS {mount_->run();std::cout << delimiter << std::endl;mount_= new MOUNT_();}
+;
 
 MOUNTPS: MOUNTP
        | MOUNTPS MOUNTP
 ;
 
-MOUNTP:   guion path igual ruta
-        | guion path igual cadena_esp
-        | guion name igual id
-        | guion name igual cadena_esp
+MOUNTP:   guion path igual ruta {mount_->setPath($4);}
+        | guion path igual cadena_esp {mount_->setPath($4);}
+        | guion name igual id {mount_->setName($4);}
+        | guion name igual cadena_esp {mount_->setName($4);}
 ;
 
 UNMOUNT: unmount guion id igual id

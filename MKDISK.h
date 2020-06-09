@@ -47,19 +47,16 @@ void MKDISK_::setSize(char *value)
 {
     this->size =atoi(value);
 }
-
 void MKDISK_::setFit(char *value)
 {
     strcpy(this->fit_, value);
     this->fit_[0] = tolower(fit_[0]);
     this->fit_[1] = tolower(fit_[1]);
 }
-
 void MKDISK_::setUnit(char *value)
 {
     this->unit=value;
 }
-
 void MKDISK_::setPath(char *value)
 {
     if(value[0]=='\"')
@@ -74,7 +71,6 @@ void MKDISK_::setPath(char *value)
         strcpy(this->path, value);
     }
 }
-
 void MKDISK_::setCorrect()
 {
     this->correct = false;
@@ -94,12 +90,10 @@ void MKDISK_::setCorrect()
         cout << "Algunos de los parametros no cumplen con los requerimentos." << endl;
     }
 }
-
 void MKDISK_::printMk()
 {
     createDisk();
 }
-
 int MKDISK_::createDisk()
 {
     setCorrect();
@@ -113,7 +107,7 @@ int MKDISK_::createDisk()
         {
             pathClone = pathClone.substr(0, last_slash_idx);
         }
-        string comando = "mkdir -p \'";
+        string comando = "sudo mkdir -p \'";
         comando+= dirname(path);
         comando+= '\'';
         system(comando.c_str());
@@ -162,13 +156,11 @@ int MKDISK_::createDisk()
     }
     return 0;
 }
-
 int MKDISK_::getSize()
 {
     int tam = this->size*this->getUnit();
     return tam;
 }
-
 int MKDISK_::getUnit()
 {
     this->unit = this->toLowerString(this->unit);

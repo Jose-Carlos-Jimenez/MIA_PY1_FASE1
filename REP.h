@@ -271,15 +271,15 @@ public:
                                     if(porcentaje_real!=0){
                                         if(ebr.part_status != '1'){
                                             sprintf(strchr(dest,'\0'), "<td height='200' width='75'>EBR</td>\n");
-                                            sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LOGICA<br/>Ocupado: %.1f%c</td>\n",porcentaje_real,'%');
+                                            sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LOGICA<br/>Porcentaje: %.1f%c</td>\n",porcentaje_real,'%');
                                         }else{
-                                            sprintf(strchr(dest,'\0'), "      <td height='200' width='150'>LIBRE <br/> Ocupado: %.1f%c</td>\n",porcentaje_real,'%');
+                                            sprintf(strchr(dest,'\0'), "      <td height='200' width='150'>LIBRE <br/> Porcentaje: %.1f%c</td>\n",porcentaje_real,'%');
                                         }
                                         if(ebr.part_next==-1){
                                             parcial = (master.mbr_partitions[i].part_start + master.mbr_partitions[i].part_size) - (ebr.part_start + ebr.part_size);
                                             porcentaje_real = (parcial*100)/size;
                                             if(porcentaje_real!=0){
-                                                sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LIBRE <br/> Ocupado: %.1f%c </td>\n",porcentaje_real,'%');
+                                                sprintf(strchr(dest,'\0'), "     <td height='200' width='150'>LIBRE <br/> Porcentaje: %.1f%c </td>\n",porcentaje_real,'%');
                                             }
                                             break;
                                         }
