@@ -102,6 +102,8 @@ int MKDISK_::createDisk()
         //Creando el disco principal
         string pathClone = this->path;
         string pathTwice = this->path;
+        char* ruta_aux = this->path;
+
         const size_t last_slash_idx = pathClone.find_last_of("/");
         if (std::string::npos != last_slash_idx)
         {
@@ -111,6 +113,12 @@ int MKDISK_::createDisk()
         comando+= dirname(path);
         comando+= '\'';
         system(comando.c_str());
+
+        // Comando para permisos.
+        string comandow = "sudo chmod -R 777 \'";
+        comandow+= dirname(ruta_aux);
+        comandow += '\'';
+        system(comandow.c_str());
         FILE *f;
         f = fopen(pathTwice.c_str(),"wb");
         if(f == NULL)
