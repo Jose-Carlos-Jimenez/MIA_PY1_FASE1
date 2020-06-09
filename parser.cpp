@@ -76,6 +76,7 @@
 #include <FDISK.h>
 #include <REP.h>
 #include <MOUNT.h>
+#include <UNMOUNT.h>
 #include <QList>
 
 
@@ -93,6 +94,7 @@ RMDISK_* rmdisk_ = new RMDISK_();
 FDISK_* fdisk_ = new FDISK_();
 REP_* rep_ = new REP_();
 MOUNT_* mount_ = new MOUNT_();
+UNMOUNT_* unmount_ = new UNMOUNT_();
 
 string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
@@ -102,7 +104,7 @@ void yyerror( const char *s)
     s=s;
 }
 
-#line 106 "parser.cpp" /* yacc.c:339  */
+#line 108 "parser.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -181,12 +183,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 112 "sintactico.y" /* yacc.c:355  */
+#line 114 "sintactico.y" /* yacc.c:355  */
 
 char* STRING;
 char* NUM;
 
-#line 190 "parser.cpp" /* yacc.c:355  */
+#line 192 "parser.cpp" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -217,7 +219,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 221 "parser.cpp" /* yacc.c:358  */
+#line 223 "parser.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -520,13 +522,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   120,   120,   122,   123,   126,   127,   128,   129,   130,
-     131,   132,   135,   138,   139,   142,   143,   144,   145,   146,
-     147,   148,   149,   152,   153,   156,   159,   160,   162,   163,
-     164,   165,   166,   167,   168,   169,   170,   171,   172,   173,
-     174,   175,   176,   177,   178,   179,   182,   185,   186,   189,
-     190,   191,   192,   195,   196,   199,   200,   203,   206,   207,
-     210,   211,   212,   213,   214,   215
+       0,   122,   122,   124,   125,   128,   129,   130,   131,   132,
+     133,   134,   137,   140,   141,   144,   145,   146,   147,   148,
+     149,   150,   151,   154,   155,   158,   161,   162,   164,   165,
+     166,   167,   168,   169,   170,   171,   172,   173,   174,   175,
+     176,   177,   178,   179,   180,   181,   184,   187,   188,   191,
+     192,   193,   194,   197,   198,   201,   202,   205,   208,   209,
+     212,   213,   214,   215,   216,   217
 };
 #endif
 
@@ -1464,259 +1466,271 @@ yyreduce:
   switch (yyn)
     {
         case 12:
-#line 135 "sintactico.y" /* yacc.c:1646  */
+#line 137 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->printMk();std::cout << delimiter << std::endl;;mkdisk_ = new MKDISK_();}
-#line 1470 "parser.cpp" /* yacc.c:1646  */
+#line 1472 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 142 "sintactico.y" /* yacc.c:1646  */
+#line 144 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setSize((yyvsp[0].NUM));}
-#line 1476 "parser.cpp" /* yacc.c:1646  */
+#line 1478 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 143 "sintactico.y" /* yacc.c:1646  */
+#line 145 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit((yyvsp[0].STRING));}
-#line 1482 "parser.cpp" /* yacc.c:1646  */
+#line 1484 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 144 "sintactico.y" /* yacc.c:1646  */
+#line 146 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit((yyvsp[0].STRING));}
-#line 1488 "parser.cpp" /* yacc.c:1646  */
+#line 1490 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 145 "sintactico.y" /* yacc.c:1646  */
+#line 147 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setFit((yyvsp[0].STRING));}
-#line 1494 "parser.cpp" /* yacc.c:1646  */
+#line 1496 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 146 "sintactico.y" /* yacc.c:1646  */
+#line 148 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setUnit((yyvsp[0].STRING));}
-#line 1500 "parser.cpp" /* yacc.c:1646  */
+#line 1502 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 147 "sintactico.y" /* yacc.c:1646  */
+#line 149 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setUnit((yyvsp[0].STRING));}
-#line 1506 "parser.cpp" /* yacc.c:1646  */
+#line 1508 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 148 "sintactico.y" /* yacc.c:1646  */
+#line 150 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setPath((yyvsp[0].STRING));}
-#line 1512 "parser.cpp" /* yacc.c:1646  */
+#line 1514 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 149 "sintactico.y" /* yacc.c:1646  */
+#line 151 "sintactico.y" /* yacc.c:1646  */
     {mkdisk_->setPath((yyvsp[0].STRING));}
-#line 1518 "parser.cpp" /* yacc.c:1646  */
+#line 1520 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 152 "sintactico.y" /* yacc.c:1646  */
+#line 154 "sintactico.y" /* yacc.c:1646  */
     {rmdisk_->setPath((yyvsp[0].STRING));rmdisk_->borrarDisco();std::cout << delimiter << std::endl; rmdisk_ = new RMDISK_();}
-#line 1524 "parser.cpp" /* yacc.c:1646  */
+#line 1526 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 153 "sintactico.y" /* yacc.c:1646  */
+#line 155 "sintactico.y" /* yacc.c:1646  */
     {rmdisk_->setPath((yyvsp[0].STRING));rmdisk_->borrarDisco();std::cout << delimiter << std::endl; rmdisk_ = new RMDISK_();}
-#line 1530 "parser.cpp" /* yacc.c:1646  */
+#line 1532 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 156 "sintactico.y" /* yacc.c:1646  */
+#line 158 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->run();std::cout << delimiter << std::endl;fdisk_ = new FDISK_();}
-#line 1536 "parser.cpp" /* yacc.c:1646  */
+#line 1538 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 162 "sintactico.y" /* yacc.c:1646  */
+#line 164 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setSize((yyvsp[0].NUM));}
-#line 1542 "parser.cpp" /* yacc.c:1646  */
+#line 1544 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 163 "sintactico.y" /* yacc.c:1646  */
+#line 165 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setUnit((yyvsp[0].STRING));}
-#line 1548 "parser.cpp" /* yacc.c:1646  */
+#line 1550 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 164 "sintactico.y" /* yacc.c:1646  */
+#line 166 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setUnit((yyvsp[0].STRING));}
-#line 1554 "parser.cpp" /* yacc.c:1646  */
+#line 1556 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 165 "sintactico.y" /* yacc.c:1646  */
+#line 167 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setUnit((yyvsp[0].STRING));}
-#line 1560 "parser.cpp" /* yacc.c:1646  */
+#line 1562 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 166 "sintactico.y" /* yacc.c:1646  */
+#line 168 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setPath((yyvsp[0].STRING));}
-#line 1566 "parser.cpp" /* yacc.c:1646  */
+#line 1568 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 167 "sintactico.y" /* yacc.c:1646  */
+#line 169 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setPath((yyvsp[0].STRING));}
-#line 1572 "parser.cpp" /* yacc.c:1646  */
+#line 1574 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 168 "sintactico.y" /* yacc.c:1646  */
+#line 170 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setType((yyvsp[0].STRING));}
-#line 1578 "parser.cpp" /* yacc.c:1646  */
+#line 1580 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 169 "sintactico.y" /* yacc.c:1646  */
+#line 171 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setType((yyvsp[0].STRING));}
-#line 1584 "parser.cpp" /* yacc.c:1646  */
+#line 1586 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 170 "sintactico.y" /* yacc.c:1646  */
+#line 172 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setType((yyvsp[0].STRING));}
-#line 1590 "parser.cpp" /* yacc.c:1646  */
+#line 1592 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 171 "sintactico.y" /* yacc.c:1646  */
+#line 173 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setFit((yyvsp[0].STRING));}
-#line 1596 "parser.cpp" /* yacc.c:1646  */
+#line 1598 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 172 "sintactico.y" /* yacc.c:1646  */
+#line 174 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setFit((yyvsp[0].STRING));}
-#line 1602 "parser.cpp" /* yacc.c:1646  */
+#line 1604 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 173 "sintactico.y" /* yacc.c:1646  */
+#line 175 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setFit((yyvsp[0].STRING));}
-#line 1608 "parser.cpp" /* yacc.c:1646  */
+#line 1610 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 174 "sintactico.y" /* yacc.c:1646  */
+#line 176 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setDelete((yyvsp[0].STRING));}
-#line 1614 "parser.cpp" /* yacc.c:1646  */
+#line 1616 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 175 "sintactico.y" /* yacc.c:1646  */
+#line 177 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setDelete((yyvsp[0].STRING));}
-#line 1620 "parser.cpp" /* yacc.c:1646  */
+#line 1622 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 176 "sintactico.y" /* yacc.c:1646  */
+#line 178 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setName((yyvsp[0].STRING));}
-#line 1626 "parser.cpp" /* yacc.c:1646  */
+#line 1628 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 177 "sintactico.y" /* yacc.c:1646  */
+#line 179 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setName((yyvsp[0].STRING));}
-#line 1632 "parser.cpp" /* yacc.c:1646  */
+#line 1634 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 178 "sintactico.y" /* yacc.c:1646  */
+#line 180 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setAdd((yyvsp[0].NUM));}
-#line 1638 "parser.cpp" /* yacc.c:1646  */
+#line 1640 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 179 "sintactico.y" /* yacc.c:1646  */
+#line 181 "sintactico.y" /* yacc.c:1646  */
     {fdisk_->setAdd((yyvsp[0].NUM));}
-#line 1644 "parser.cpp" /* yacc.c:1646  */
+#line 1646 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 182 "sintactico.y" /* yacc.c:1646  */
+#line 184 "sintactico.y" /* yacc.c:1646  */
     {mount_->run();std::cout << delimiter << std::endl;mount_= new MOUNT_();}
-#line 1650 "parser.cpp" /* yacc.c:1646  */
+#line 1652 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 189 "sintactico.y" /* yacc.c:1646  */
+#line 191 "sintactico.y" /* yacc.c:1646  */
     {mount_->setPath((yyvsp[0].STRING));}
-#line 1656 "parser.cpp" /* yacc.c:1646  */
+#line 1658 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 190 "sintactico.y" /* yacc.c:1646  */
+#line 192 "sintactico.y" /* yacc.c:1646  */
     {mount_->setPath((yyvsp[0].STRING));}
-#line 1662 "parser.cpp" /* yacc.c:1646  */
+#line 1664 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 191 "sintactico.y" /* yacc.c:1646  */
+#line 193 "sintactico.y" /* yacc.c:1646  */
     {mount_->setName((yyvsp[0].STRING));}
-#line 1668 "parser.cpp" /* yacc.c:1646  */
+#line 1670 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 192 "sintactico.y" /* yacc.c:1646  */
+#line 194 "sintactico.y" /* yacc.c:1646  */
     {mount_->setName((yyvsp[0].STRING));}
-#line 1674 "parser.cpp" /* yacc.c:1646  */
+#line 1676 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 53:
+#line 197 "sintactico.y" /* yacc.c:1646  */
+    {unmount_->setId((yyvsp[0].STRING));unmount_->run();std::cout << delimiter << std::endl;unmount_= new UNMOUNT_();}
+#line 1682 "parser.cpp" /* yacc.c:1646  */
+    break;
+
+  case 54:
+#line 198 "sintactico.y" /* yacc.c:1646  */
+    {unmount_->setId((yyvsp[0].STRING));unmount_->run();std::cout << delimiter << std::endl;unmount_= new UNMOUNT_();}
+#line 1688 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 203 "sintactico.y" /* yacc.c:1646  */
+#line 205 "sintactico.y" /* yacc.c:1646  */
     {rep_->run();std::cout << delimiter << std::endl;rep_ = new REP_();}
-#line 1680 "parser.cpp" /* yacc.c:1646  */
+#line 1694 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 210 "sintactico.y" /* yacc.c:1646  */
+#line 212 "sintactico.y" /* yacc.c:1646  */
     {rep_->setRuta((yyvsp[0].STRING));}
-#line 1686 "parser.cpp" /* yacc.c:1646  */
+#line 1700 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 211 "sintactico.y" /* yacc.c:1646  */
+#line 213 "sintactico.y" /* yacc.c:1646  */
     {rep_->setRuta((yyvsp[0].STRING));}
-#line 1692 "parser.cpp" /* yacc.c:1646  */
+#line 1706 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 212 "sintactico.y" /* yacc.c:1646  */
+#line 214 "sintactico.y" /* yacc.c:1646  */
     {rep_->setId((yyvsp[0].STRING));}
-#line 1698 "parser.cpp" /* yacc.c:1646  */
+#line 1712 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 213 "sintactico.y" /* yacc.c:1646  */
+#line 215 "sintactico.y" /* yacc.c:1646  */
     {rep_->setId((yyvsp[0].STRING));}
-#line 1704 "parser.cpp" /* yacc.c:1646  */
+#line 1718 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 214 "sintactico.y" /* yacc.c:1646  */
+#line 216 "sintactico.y" /* yacc.c:1646  */
     {rep_->setName((yyvsp[0].STRING));}
-#line 1710 "parser.cpp" /* yacc.c:1646  */
+#line 1724 "parser.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 215 "sintactico.y" /* yacc.c:1646  */
+#line 217 "sintactico.y" /* yacc.c:1646  */
     {rep_->setName((yyvsp[0].STRING));}
-#line 1716 "parser.cpp" /* yacc.c:1646  */
+#line 1730 "parser.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 1720 "parser.cpp" /* yacc.c:1646  */
+#line 1734 "parser.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1951,6 +1965,6 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 217 "sintactico.y" /* yacc.c:1906  */
+#line 219 "sintactico.y" /* yacc.c:1906  */
 
 

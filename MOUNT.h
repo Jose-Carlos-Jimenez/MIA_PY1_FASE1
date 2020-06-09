@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOUNT_H
 #define MOUNT_H
 
@@ -46,6 +47,7 @@ public:
     char getLetter();
     int getNumber();
     string getId();
+    string confId();
     void semantic();
     void run();
     int partIndex();
@@ -57,7 +59,7 @@ extern QList<MOUNT_> *mounted;
 
 void MOUNT_::setId()
 {
-    this->id = this->getId();
+    this->id = this->confId();
 }
 
 void MOUNT_::setLetter(char c)
@@ -109,6 +111,11 @@ int MOUNT_::getNumber()
 
 string MOUNT_::getId()
 {
+    return this->id;
+}
+
+string MOUNT_::confId()
+{
     string l(1,getLetter());
     return "vd"+ l+ to_string(this->getNumber());
 }
@@ -134,7 +141,7 @@ void MOUNT_::run()
     semantic();
     if(this->correct)
     {
-        cout <<"Intentando montar: "<< this->getId() << endl;
+        cout <<"Intentando montar: "<< this->confId() << endl;
         mountPartition();
     }
     else

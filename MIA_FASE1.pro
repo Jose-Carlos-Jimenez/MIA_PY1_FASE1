@@ -17,6 +17,7 @@ HEADERS += \
     MOUNT.h \
     REP.h \
     RMDISK.h \
+    UNMOUNT.h \
     parser.h \
     scanner.h \
     structs.h

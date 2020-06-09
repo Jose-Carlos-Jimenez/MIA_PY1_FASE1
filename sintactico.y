@@ -14,6 +14,7 @@
 #include <FDISK.h>
 #include <REP.h>
 #include <MOUNT.h>
+#include <UNMOUNT.h>
 #include <QList>
 
 
@@ -31,6 +32,7 @@ RMDISK_* rmdisk_ = new RMDISK_();
 FDISK_* fdisk_ = new FDISK_();
 REP_* rep_ = new REP_();
 MOUNT_* mount_ = new MOUNT_();
+UNMOUNT_* unmount_ = new UNMOUNT_();
 
 string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
@@ -192,8 +194,8 @@ MOUNTP:   guion path igual ruta {mount_->setPath($4);}
         | guion name igual cadena_esp {mount_->setName($4);}
 ;
 
-UNMOUNT: unmount guion id igual id
-       | unmount guion id igual cadena_esp
+UNMOUNT: unmount guion id igual id {unmount_->setId($5);unmount_->run();std::cout << delimiter << std::endl;unmount_= new UNMOUNT_();}
+       | unmount guion id igual cadena_esp {unmount_->setId($5);unmount_->run();std::cout << delimiter << std::endl;unmount_= new UNMOUNT_();}
 ;
 
 EXEC: exec guion path igual ruta
