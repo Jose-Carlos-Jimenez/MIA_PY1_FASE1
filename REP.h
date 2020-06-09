@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <structs.h>
 #include "parser.h"
+#include <libgen.h>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ class REP_
 private:
     char *id;
     char *ruta;
-    string *path;
+    string path;
     char *name;
     bool correct;
     bool isMounted;
@@ -27,7 +28,7 @@ public:
     /*
      * Constructor
     */
-    REP_():id(0),ruta(0),path(0),name(0),correct(false),isMounted(false){}
+    REP_():id(0),ruta(0),path(""),name(0),correct(false),isMounted(false){}
     /*
      * Getters & Setters
     */
@@ -96,12 +97,11 @@ void REP_::setId(char *id)
 
 void REP_::setPath(char *id)
 {
-    this->path = new string;
-    int size = strlen(id);
-    this->path->assign(id,size);
-    if(this->path->at(0) == '\"')
+    this->path = "";
+    path.append(id);
+    if(path[0]== '\"')
     {
-        this->path->assign(path->substr(1, path->size()-2));
+        path=path.substr(1, path.size()-2);
     }
 }
 
@@ -126,7 +126,7 @@ void REP_::confRuta()
 
 void REP_::semantic()
 {
-    if(this->getId() !=0 && this->getName() != 0 && this->path != 0)
+    if(this->getId() !=0 && this->getName() != 0 && this->path != "")
     {
         this->correct = true;
     }
@@ -287,12 +287,47 @@ void REP_::reportMBR()
         }
         dot+="}\n";
         fclose(f);
-        FILE *nuevo = fopen("reporte_mbr.txt","w");
-        fprintf(nuevo,"%s\n",dot.c_str());
-        fclose(nuevo);
-        string comando = "dot reporte_mbr.txt -o reporte_mbr.png -Tpng";
+
+        // Obtener la ruta.
+        string pathClone = this->path;
+        string pathTwice = this->path;
+        string terminacion;
+        pathTwice += ".txt";
+        const size_t last_slash_idx = pathClone.find_last_of(".");
+        if (std::string::npos != last_slash_idx)
+        {
+            terminacion = pathClone.substr(last_slash_idx, pathClone.length());
+            pathClone = pathClone.substr(0, last_slash_idx);
+        }
+
+        // Creando comando para crear la carpeta.
+        char* ruta_aux = new char(this->path.length());
+        strcpy(ruta_aux, this->path.c_str());
+        char* path = new char(this->path.length());
+        strcpy(path,this->path.c_str());
+        string comando = "sudo mkdir -p \'";
+        comando+= dirname(path);
+        comando+= '\'';
         system(comando.c_str());
-        cout << "Reporte del MBR ha sido creado." << endl;
+
+        // Comando para permisos.
+        string comandow = "sudo chmod -R 777 \'";
+        comandow+= dirname(ruta_aux);
+        comandow += '\'';
+        system(comandow.c_str());
+
+        // Creando el file.
+        FILE *nuevo = fopen(pathTwice.c_str(),"w+");
+        freopen(NULL,"w+",nuevo);
+        char dest[dot.length()];
+        strcpy(dest,dot.c_str());
+        fprintf(nuevo,"%s\n",dest);
+        fclose(nuevo);
+        string comandoS = "dot \'";
+        comandoS += pathTwice;
+        comandoS +="\' -o \'" + pathClone + terminacion + " \' -T" + terminacion.substr(1,terminacion.length());
+        system(comandoS.c_str());
+        cout << "Reporte del DISK ha sido creado." << endl;
     }
     else
     {
@@ -413,11 +448,44 @@ void REP_::reportDISK()
             }
         }
         sprintf(strchr(dest,'\0'),"</tr> \n     </table>        \n>];\n\n}");
-        FILE *nuevo = fopen("reporte_disk.txt","w");
+
+        // Obtener la ruta.
+        string pathClone = this->path;
+        string pathTwice = this->path;
+        string terminacion;
+        pathTwice += ".txt";
+        const size_t last_slash_idx = pathClone.find_last_of(".");
+        if (std::string::npos != last_slash_idx)
+        {
+            terminacion = pathClone.substr(last_slash_idx, pathClone.length());
+            pathClone = pathClone.substr(0, last_slash_idx);
+        }
+
+        // Creando comando para crear la carpeta.
+        char* ruta_aux = new char(this->path.length());
+        strcpy(ruta_aux, this->path.c_str());
+        char* path = new char(this->path.length());
+        strcpy(path,this->path.c_str());
+        string comando = "sudo mkdir -p \'";
+        comando+= dirname(path);
+        comando+= '\'';
+        system(comando.c_str());
+
+        // Comando para permisos.
+        string comandow = "sudo chmod -R 777 \'";
+        comandow+= dirname(ruta_aux);
+        comandow += '\'';
+        system(comandow.c_str());
+
+        // Creando el file.
+        FILE *nuevo = fopen(pathTwice.c_str(),"w+");
+        freopen(NULL,"w+",nuevo);
         fprintf(nuevo,"%s\n",dest);
         fclose(nuevo);
-        string comando = "dot reporte_disk.txt -o reporte_disk.png -Tpng";
-        system(comando.c_str());
+        string comandoS = "dot \'";
+        comandoS += pathTwice;
+        comandoS +="\' -o \'" + pathClone + terminacion + " \' -T" + terminacion.substr(1,terminacion.length());
+        system(comandoS.c_str());
         cout << "Reporte del DISK ha sido creado." << endl;
     }
 }
