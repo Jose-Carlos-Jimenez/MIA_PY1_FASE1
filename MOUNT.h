@@ -2,7 +2,7 @@
 #ifndef MOUNT_H
 #define MOUNT_H
 
-#endif // MOUNT_H
+#endif /// MOUNT_H
 
 #include <string.h>
 #include <stdio.h>
@@ -16,14 +16,22 @@ using namespace std;
 class MOUNT_
 {
 private:
-    string path;
-    string name;
-    string id;
-    char letter;
-    int number;
-    bool correct;
+    string path;/// Ruta del disco de la partición.
+    string name;/// Nombre de la partición.
+    string id;/// Id en la lista de particiones montadas.
+    char letter;/// Caracter que indica a que disco pertenece.
+    int number;/// Número de partición que es montada de algún disco.
+    bool correct;/// Semántica correcta de la función.
 public:
+    /**
+     * Constructor de MOUNT
+    */
     MOUNT_():path(""), name(""), correct(false){}
+
+    /**
+     * Guarda el valor de la ruta
+     * @param c: indica la ruta del disco de la partición a montar.
+    */
     void setPath(char* c)
     {
         path = c;
@@ -32,6 +40,10 @@ public:
             path = path.substr(1, path.size()-2);
         }
     }
+    /**
+     * Guarda el nombre de la partición a montar.
+     * @param c: partición a montar.
+    */
     void setName(char *c)
     {
         name = c;
@@ -40,19 +52,78 @@ public:
             name = name.substr(1, name.size()-2);
         }
     }
+
+    /**
+     * Guarda el id que se le asigno a la partición
+     * en la lista de montadas.
+    */
     void setId();
+
+    /**
+     * Guarda la letra del disco a la que pertenece esta partición montada.
+     * @param c: letra asignada por el sistema de montaje a su disco.
+    */
     void setLetter(char c);
+
+    /**
+     * Obtiene el nombre de la partición
+    */
     string getName(){return this->name;};
+
+    /**
+     * Retorna la ruta del disco de esta partición.
+    */
     string getPath(){return this->path;};
+
+    /**
+     * Calcula la letra del disco a la cual pertenece la partición
+    */
     char getLetter();
+
+    /**
+     * Obtiene el número de partición montada de un mismo disco.
+    */
     int getNumber();
+
+    /**
+     * Calcula el id mediante la concatenacion de
+     * VD + letra del disco + número de partición de ese disco.
+    */
     string getId();
+
+    /*
+     * Configura el identificador de la partición montada.
+    */
     string confId();
+
+    /**
+     * Verifica la semántica de la operación ingresada en consola.
+    */
     void semantic();
+
+    /**
+     * Ejecuta la montura.
+    */
     void run();
+
+    /**
+     * Obtiene el indice de partición que tiene la deseada en el disco.
+    */
     int partIndex();
+
+    /**
+     * Obtiene el indice de partición en donde está almacenada la lógica.
+    */
     int LogicPartIndex();
+
+    /*
+     * Monta la partición.
+    */
     void mountPartition();
+
+    /*
+     * Verifica si la partición que se desea montar ya ha sido montada.
+    */
     bool isMounted();
 };
 
@@ -173,7 +244,7 @@ int MOUNT_::LogicPartIndex()
 {
     FILE *file;
     if((file = fopen(this->path.c_str(),"r+b"))){
-        // Buscar la partición extendida del disco
+        /// Buscar la partición extendida del disco
         int extIndex = -1;
         MBR master;
         fseek(file,0,SEEK_SET);
@@ -185,7 +256,7 @@ int MOUNT_::LogicPartIndex()
             }
         }
         if(extIndex != -1){
-            // Buscar si existe una lógica en el disco
+            /// Buscar si existe una lógica en el disco
             EBR ebr;
             fseek(file, master.mbr_partitions[extIndex].part_start,SEEK_SET);
             fread(&ebr,sizeof (EBR),1,file);
@@ -208,26 +279,26 @@ void MOUNT_::mountPartition()
     int indexOfPart = partIndex();
     if(indexOfPart != -1)
     {
-        //Abrir el archivo
+        ///Abrir el archivo
         FILE*file= fopen(this->path.c_str(),"r+b");
         MBR master;
         fseek(file,0,SEEK_SET);
         fread(&master,sizeof (MBR),1,file);
 
-        //Cambiar su status
+        ///Cambiar su status
         master.mbr_partitions[indexOfPart].part_status = '2';
 
-        //Reescribirlo
+        ///Reescribirlo
         fseek(file,0, SEEK_SET);
         fwrite(&master,sizeof (MBR),1,file);
         fseek(file,0,SEEK_SET);
         fread(&master, sizeof (MBR),1,file);
         fclose(file);
 
-        //Verificar si está montada
+        ///Verificar si está montada
         if(!isMounted())
         {
-            //Insertar a la lista.
+            ///Insertar a la lista.
             setId();
             mounted->append(*this);
             cout << "La partición " << this->id << " ha sido montada con éxito." << endl;
@@ -246,19 +317,19 @@ void MOUNT_::mountPartition()
             FILE * aux;
             if((aux = fopen(getPath().c_str(),"r+b")))
             {
-                //Leer el ebr
+                ///Leer el ebr
                 EBR ebr;
                 fseek(aux, indexLog, SEEK_SET);
                 fread(&ebr, sizeof(EBR),1,aux);
 
-                //Cambiar su estado a montado.
+                ///Cambiar su estado a montado.
                 ebr.part_status = '2';
                 fseek(aux,indexLog,SEEK_SET);
                 fwrite(&ebr,sizeof(EBR),1, aux);
                 fclose(aux);
                 if(!isMounted())
                 {
-                    //Insertar a la lista.
+                    ///Insertar a la lista.
                     setId();
                     mounted->append(*this);
                     cout << "La partición " << this->id << " ha sido montada con éxito." << endl;

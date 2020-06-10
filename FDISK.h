@@ -9,81 +9,98 @@
 #include<structs.h>
 
 using namespace  std;
-
+/**
+  @brief
+ * Clase en la que se programaron el análisis semantico de la función FDISK
+ * además se implemento su funcionamiento y validación de parámetros.
+ *
+*/
 class FDISK_
 {
 private:
-    /*
+    /**
      * Tamaño de la particion
      */
     int size;
-    /*
+    /**
      * Unidad del tamaño de la particion
      */
     char unit;
-    /*
+    /**
      * Directorio en donde se creara la particion
      */
     char *path;
-    /*
+    /**
      * Directorio para actualizar el raid
     */
     string raid_path;
-    /*
+    /**
      * Ajuste de la particion
      */
     char *fit;
-    /*
+    /**
      * Forma de eliminar
      */
     char *_delete;
-    /*
+    /**
      * Nombre de la particion
      */
     char *name;
-    /*
+    /**
      * Añade o remueve segun sea el signo del numero, espacio en la particion
      */
     int add;
-    /*
+    /**
      * Tipo de partición que se creara
     */
     enum type{P, E, L, empty};
     type type;
-    /*
+    /**
      * Tipo de operacion
      */
     enum operation{create_, delete_, modify_};
     operation operation;
-    /*
+    /**
      * enum para ver que disco se está escribiendo.
     */
     enum kink{principal, raid};
-    /*
+    /**
      * Identificara si la instruccion FDISK es valida
      */
     bool correct;
 
 
 public:
-    /*
+    /**
      * Constructor vacio del objeto
      */
     FDISK_():size(0),fit(0),_delete(0),add(0),type(empty),operation(create_){};
 
-    /*
-     * Modificadores de los atributos del objeto
+    /**
+     * Modificador del atributo size
+     * @param size: indica el tamaño de la partición que se desea realizar.
      */
     void setSize(char* size)
     {
         this->size = stoi(size);
     }
 
+    /**
+     * Modificador del atributo unit
+     * @param unit: indica la unidad de medida del parametro size.
+     * Megabytes = M|m
+     * Kilobytes = K|k
+     * Bytes = B|b
+    */
     void setUnit(char* unit)
     {
         this->unit = unit[0];
     }
 
+    /**
+     * Modificador del atributo path
+     * @param path: indica en donde se guardará el disco.
+    */
     void setPath(char *path)
     {
         this->path = path;
@@ -98,33 +115,58 @@ public:
 
     }
 
+    /**
+     * Modificador del tipo de ajuste
+     * @param fit: indica el ajuste con el que las particiones se insertarán al disco.
+     *
+    */
     void setFit(char* fit)
     {
         this->fit = fit;
     }
 
+    /**
+     * Modificador del atributo delete
+     * @param delete: indica que tipo de borrado se aplicará para una partición.
+    */
     void setDelete(char* _delete)
     {
         this->_delete = _delete;
         this->operation = delete_;
     }
 
+    /**
+     * Modificador del atributo name.
+     * @param name: indica el nombre de la partición.
+    */
     void setName(char *name)
     {
         this->name = name;
     }
 
+    /**
+     * Modificador del atributo add.
+     * @param add: Indica la cantidad de espacio que se agregará o disminuirá la partición.
+    */
     void setAdd(char* add)
     {
         this->add = atoi(add);
         this->operation = modify_;
     }
 
+    /**
+     * Modificador del atributo correct.
+     * @param correct: identifica si la semántica del programa es correcta.
+    */
     void setCorrect(bool correct)
     {
         this->correct = correct;
     }
 
+    /**
+     * Modificador de tipo
+     * @param type: Indica que tipo de operación hará el comando.
+    */
     void setType(char *type)
     {
         switch (tolower(type[0])) {
@@ -143,11 +185,10 @@ public:
         }
     }
 
-    /*
+    /**
      * Acceso a los atributos del objeto, se hicieron a conveniencia
      * por lo cual no siguen la típica convención.
     */
-
     char getFit()
     {
         if(this->fit==0)return'W';
@@ -156,12 +197,20 @@ public:
         return toupper(aux[0]);
     }
 
+    /**
+     * Acceso a la unidad, la letra de la unidad que se estableció
+     * en formato estándar según el enunciado.
+    */
     char getUnit()
     {
         if(this->unit==0)return 'K';
         return toupper(this->unit);
     }
 
+    /**
+     * Permite obtener el tamaño de la partición a realizar
+     * según la unidad que fue indicada.
+    */
     int getSize()
     {
         char u = getUnit();
@@ -180,6 +229,9 @@ public:
         return 0;
     }
 
+    /**
+     * Nos indica el tipo de partición sobre la cual se esta trabajando.
+    */
     signed char getType()
     {
         switch (type) {
@@ -197,7 +249,7 @@ public:
         }
     }
 
-    /*
+    /**
      * Metodo para crear particion
      */
     void createPart(){
@@ -221,7 +273,8 @@ public:
             break;
         }
     }
-    /*
+
+    /**
      * Método para crear partición primaria.
     */
     void primaryPart(kink which)
@@ -405,7 +458,7 @@ public:
 
     }
 
-    /*
+    /**
      * Método para crear partición extendida.
     */
     void extendedPart(kink which)
@@ -626,7 +679,7 @@ public:
         fclose(file);
     }
 
-    /*
+    /**
      * Método para crear una partición lógica.
     */
     void logicPart(kink which)
@@ -694,7 +747,7 @@ public:
                             cout << "Espacio insuficiente en la partición "<<this->name<< " extendida." << endl;
                         }
                     }
-                    else/*Caso especial en el que sea la partición inicial.*/
+                    else/**Caso especial en el que sea la partición inicial.*/
                     {
                         cout << "Espacio necesario para la partición " << to_string(getSize()) << endl;
                         if(master.mbr_partitions[extIndex].part_size > getSize())//Si cabe la partición lógica en la totalidad
@@ -734,7 +787,7 @@ public:
         }
         fclose(file);
     }
-    /*
+    /**
      * Método para verificar que la partición no exista ya.
     */
     bool doesExist(char* name, kink which)
@@ -784,7 +837,7 @@ public:
         return  false;
     }
 
-    /*
+    /**
      * Mensaje de confirmación de creación de particiones.
     */
     void printEnd(kink which)
@@ -799,21 +852,21 @@ public:
         }
     }
 
-    /*
+    /**
      * Metodo para modificar particion
      */
     void modifyPart(){
         return;
     }
 
-    /*
+    /**
      * Metodo para elimiar particion
      */
     void deletePart(){
         return;
     }
 
-    /*
+    /**
      * Verifica que los atributos de la instruccion esten correctos semanticamente
      */
     void semantic(){
@@ -888,7 +941,7 @@ public:
         return;
     }
 
-    /*
+    /**
      * Método principal para ejecutar la instrucción.
     */
     void run()
@@ -929,7 +982,7 @@ public:
 
     }
 
-    /*
+    /**
      * Método para imprimir el MBR
     */
     void DebugBinario()

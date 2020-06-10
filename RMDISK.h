@@ -1,7 +1,7 @@
 #ifndef RMDISK_H
 #define RMDISK_H
 
-#endif // RMDISK_H
+#endif /// RMDISK_H
 
 #include <string.h>
 #include <stdio.h>
@@ -14,24 +14,41 @@ using namespace std;
 class RMDISK_
 {
 private:
-    string path;
-    bool correct;
+    string path;///Ruta del disco a remover.
+    bool correct;/// Indica semántica correcta.
 
 public:
+    /**
+     * Constructor de la clase RMDISK
+    */
     RMDISK_():path(""){};
+
+    /**
+     * Borra el archivo .disk del disco duro.
+    */
     void borrarDisco();
+
+    /**
+     * Verifica que los parámetros que son obligatorios no
+     * estén vacíos.
+    */
     void setObligatoriedad();
-    void setPath(char*);
+
+    /**
+     * Configura la ruta del disco que se va a eliminar.
+     * @param ruta: ruta física en el disco duro en donde está el archivo .disk.
+    */
+    void setPath(char* ruta);
 };
 
 void RMDISK_::borrarDisco()
 {
-    //Verificando semantica
+    ///Verificando semantica
     setObligatoriedad();
 
     if(this->correct)
     {
-        //Creando el disco principal
+        ///Creando el disco principal
         string pathClone = this->path;
         FILE *f;
         if((f=fopen(this->path.c_str(),"r")))

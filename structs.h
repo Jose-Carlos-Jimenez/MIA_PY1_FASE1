@@ -5,6 +5,15 @@
 #endif // STRUCTS_H
 
 #include <time.h>
+
+/**
+ * Structs que son útiles para llevar un manejo
+ * lógico de la memoria.
+*/
+
+/**
+ * Particiones primarias.
+*/
 struct Partition{
 public:
     char part_status = '0';
@@ -15,6 +24,9 @@ public:
     char part_name[16] = "";
 };
 
+/**
+ * Particiones lógicas.
+*/
 struct EBR
 {
     char part_status='0';
@@ -25,6 +37,10 @@ struct EBR
     char part_name[16];
 };
 
+/**
+ * Master boot record, sirve para administrar la memoria distribuida
+ * a las particiones a manera de meta data.
+*/
 struct MBR
 {
 public:

@@ -11,14 +11,39 @@
 class UNMOUNT_
 {
 private:
-    string id;
-    bool correct;
+    string id; /// Identificador de la partición a desmontar
+    bool correct; /// Indica si la semántica está bien.
 public:
+    /**
+     * Constructor
+    */
     UNMOUNT_():id(""), correct(false){}
-    void setId(char*);
+
+    /**
+     * Funciona para configurar el id.
+     * @param id: indica el nombre de la partición a desmontar.
+    */
+    void setId(char* id);
+
+    /**
+     * Obtiene el id de la partición.
+    */
     string getId();
+
+    /**
+     * Determina mediante validaciones si la semántica
+     * es correcta.
+    */
     void semantic();
+
+    /**
+     * Desmonta una partición de las particiones seleccionadas.
+    */
     void unmountPart();
+
+    /*
+     * Inicializa la ejecución del programa.
+    */
     void run();
 };
 

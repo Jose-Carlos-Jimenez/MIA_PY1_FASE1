@@ -1,6 +1,6 @@
 #ifndef MKDISK_H
 #define MKDISK_H
-#endif // MKDISK_H
+#endif /// MKDISK_H
 
 #include <stdio.h>
 #include <math.h>
@@ -19,27 +19,84 @@ using namespace std;
 class MKDISK_
 {
 private:
-    int size;
-    char fit_[2];
-    string unit;
-    char path[255];
-    bool correct;
-    MBR master;
+    int size;///Atributo size
+    char fit_[2];/// Arreglo para guardar fit
+    string unit;/// Atributo unit
+    char path[255];/// Carpeta en donde se almacenará el disco
+    bool correct;/// Indicador de ejecución.
+    MBR master;/// MBR auxiliar para escribir en disco.
 
 public:
+    /**
+     * Constructor
+    */
     MKDISK_(){};
-    void setSize(char*);
-    void setFit(char*);
-    void setUnit(char*);
-    void setPath(char*);
+
+    /**
+     * Configura el atributo size
+     * @param size: Indica la cantidad de unidades que ocupará el disco.
+    */
+    void setSize(char* size);
+
+    /**
+     * Configura el parámetro fit
+     * @param fit: Indica el tipo de ajuste con el que se agregarán las particiones en el disco.
+    */
+    void setFit(char* fit);
+
+    /**
+     * Configura las unidades del disco.
+     * @param unit: indica si son megabytes, kilobytes ó bytes.
+    */
+    void setUnit(char* unit);
+
+    /**
+     * Indica la ruta del archivo
+     * @param path: indica en donde se debe de crear el disco.
+    */
+    void setPath(char* path);
+
+    /**
+     * Verifica si la semántica del caso es adecuada.
+    */
     void setCorrect();
+
+    /**
+     * Acciona el comando para crear disco.
+    */
     void printMk();
-    std::string convertToString(char*,int);
+
+    /**
+     * Crea un disco con los parámetros de la clase si todo está ok.
+    */
     int createDisk();
+
+    /**
+     * Devuelve el tamaño del disco en bytes.
+    */
     int getSize();
+
+    /**
+     * Devuelve un múltiplo para cuantificar las unidades establecidas.
+    */
     int getUnit();
-    std::string toLowerString(string);
+
+    /**
+     * Devuelve un string con todos los cáracteres contenidos en el parámetro en minúscula.
+     * @param cadena: Cadena que se desea en minúsculas.
+    */
+    std::string toLowerString(string cadena);
+
+    /**
+     * Configura el MBR cuando todos los parámetros están ok,
+     * este utiliza los parámetros de la clase misma por lo cual no
+     * recibe parámetros.
+    */
     void configureMaster();
+
+    /**
+     * Obtiene la letra representativa del tipo de ajuste que se tiene.
+    */
     char getFit();
 };
 
@@ -47,16 +104,19 @@ void MKDISK_::setSize(char *value)
 {
     this->size =atoi(value);
 }
+
 void MKDISK_::setFit(char *value)
 {
     strcpy(this->fit_, value);
     this->fit_[0] = tolower(fit_[0]);
     this->fit_[1] = tolower(fit_[1]);
 }
+
 void MKDISK_::setUnit(char *value)
 {
     this->unit=value;
 }
+
 void MKDISK_::setPath(char *value)
 {
     if(value[0]=='\"')
@@ -71,6 +131,7 @@ void MKDISK_::setPath(char *value)
         strcpy(this->path, value);
     }
 }
+
 void MKDISK_::setCorrect()
 {
     this->correct = false;
@@ -90,16 +151,18 @@ void MKDISK_::setCorrect()
         cout << "Algunos de los parametros no cumplen con los requerimentos." << endl;
     }
 }
+
 void MKDISK_::printMk()
 {
     createDisk();
 }
+
 int MKDISK_::createDisk()
 {
     setCorrect();
     if(this->correct)
     {
-        //Creando el disco principal
+        ///Creando el disco principal
         string pathClone = this->path;
         string pathTwice = this->path;
         char* ruta_aux = this->path;
@@ -114,7 +177,7 @@ int MKDISK_::createDisk()
         comando+= '\'';
         system(comando.c_str());
 
-        // Comando para permisos.
+        /// Comando para permisos.
         string comandow = "sudo chmod -R 777 \'";
         comandow+= dirname(ruta_aux);
         comandow += '\'';
@@ -141,7 +204,7 @@ int MKDISK_::createDisk()
         fflush(f);
         fclose(f);
 
-        // Creando RAID
+        /// Creando RAID
         string pathRaid = pathTwice.substr(0, pathTwice.size()-5) + "_raid.disk";
         FILE* fr = fopen(pathRaid.c_str(),"wb");
         for(int i = 0; i < sizeOfArray; ++i)
@@ -158,17 +221,19 @@ int MKDISK_::createDisk()
         fflush(fr);
         fclose(fr);
 
-        //Mensaje para notificar.
+        ///Mensaje para notificar.
         cout << "Disco creado con éxito." << endl;
         return 1;
     }
     return 0;
 }
+
 int MKDISK_::getSize()
 {
     int tam = this->size*this->getUnit();
     return tam;
 }
+
 int MKDISK_::getUnit()
 {
     this->unit = this->toLowerString(this->unit);
@@ -189,28 +254,20 @@ string MKDISK_::toLowerString(string input)
 
 void MKDISK_::configureMaster()
 {
-    // Seteando tamaño
+    /// Seteando tamaño
     master.mbr_tamano = getSize()*1024;
 
-    // Seteando fecha y hora
+    /// Seteando fecha y hora
     time_t     now = time(0);
     master.mbr_fecha_creacion = now;
-    /* No se utilizó pero es para imprimir time_t
-     *
-    struct tm  tstruct;
-    char       buf[80];
-    tstruct = *localtime(&now);
-    char s = strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-    cout << buf << endl;
-    */
 
-    // Firma del disco
+    /// Firma del disco
     srand(time(NULL));
     int num = rand();
     num=1+rand()%(100000-1);
     master.mbr_disk_signature = num;
 
-    // Guardando tipo de fit
+    /// Guardando tipo de fit
     master.disk_fit = getFit();
 }
 
