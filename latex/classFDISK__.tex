@@ -1,0 +1,273 @@
+\hypertarget{classFDISK__}{}\section{F\+D\+I\+S\+K\+\_\+ Class Reference}
+\label{classFDISK__}\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+
+
+Clase en la que se programaron el análisis semantico de la función F\+D\+I\+SK además se implemento su funcionamiento y validación de parámetros.  
+
+
+
+
+{\ttfamily \#include $<$F\+D\+I\+S\+K.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFDISK___a418b57a089062accc33338bcbb9daec4}{F\+D\+I\+S\+K\+\_\+} ()
+\item 
+void \hyperlink{classFDISK___ac62891d61885c9e3e5d416b11f067c5b}{set\+Size} (char $\ast$size)
+\item 
+void \hyperlink{classFDISK___ac829852f41210c96957753e611c96c32}{set\+Unit} (char $\ast$unit)
+\item 
+void \hyperlink{classFDISK___a7dbf2da61853e0ac59c6ce48862d4013}{set\+Path} (char $\ast$path)
+\item 
+void \hyperlink{classFDISK___afb2ab7c0bdd1584aa5cb977de810bdd4}{set\+Fit} (char $\ast$fit)
+\item 
+void \hyperlink{classFDISK___ae5113216c8167ca54b1d5a99d29ed963}{set\+Delete} (char $\ast$\+\_\+delete)
+\item 
+void \hyperlink{classFDISK___a28bccf6dd576824e040a29b389c8a650}{set\+Name} (char $\ast$name)
+\item 
+void \hyperlink{classFDISK___a6de35bf474b492d03494d5cdf373df1a}{set\+Add} (char $\ast$add)
+\item 
+void \hyperlink{classFDISK___a95fb02a0658219e583601de4844a517c}{set\+Correct} (bool correct)
+\item 
+void \hyperlink{classFDISK___aa45b16384c955ecb2c7f0a02f8e62bb0}{set\+Type} (char $\ast$type)
+\item 
+char \hyperlink{classFDISK___af29e537ad425951e4c4379f812d18a21}{get\+Fit} ()
+\item 
+char \hyperlink{classFDISK___abb61ba4d1545287d53bca288bc3ae244}{get\+Unit} ()
+\item 
+int \hyperlink{classFDISK___a36811336ad11d30c712b2a9760286087}{get\+Size} ()
+\item 
+signed char \hyperlink{classFDISK___a7e5bbf0438a218aabb09bea7dfb2f9ef}{get\+Type} ()
+\item 
+void \hyperlink{classFDISK___a1d030793b942f70d9cde1d7bd7a2bb36}{create\+Part} ()
+\item 
+void \hyperlink{classFDISK___a34427ce807ae61a1e0b101bb2a69b581}{primary\+Part} (kink which)
+\item 
+void \hyperlink{classFDISK___a03f9fa267b7bdf7b2dda3aa13cfc960d}{extended\+Part} (kink which)
+\item 
+void \hyperlink{classFDISK___aabd69e0175b1950638c51ccf26cb0dcb}{logic\+Part} (kink which)
+\item 
+bool \hyperlink{classFDISK___a93bf6bebd83704cc477d365c52e78cca}{does\+Exist} (char $\ast$name, kink which)
+\item 
+void \hyperlink{classFDISK___a48abd8fe6a02cabd370e02a2b87164a3}{print\+End} (kink which)
+\item 
+void \hyperlink{classFDISK___a926ec9e4cadf17773cc630e0423af3db}{modify\+Part} ()
+\item 
+void \hyperlink{classFDISK___ac066192fc5d768882f553a802e34a1fd}{delete\+Part} ()
+\item 
+void \hyperlink{classFDISK___a3cabb04c96798f42985d7c199ba1987f}{semantic} ()
+\item 
+void \hyperlink{classFDISK___a00c4753fc48745eaf7b9fab40e864a94}{run} ()
+\item 
+void \hyperlink{classFDISK___ac3a1b362131afe438a0cfcd55d24fb24}{Debug\+Binario} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Clase en la que se programaron el análisis semantico de la función F\+D\+I\+SK además se implemento su funcionamiento y validación de parámetros. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFDISK___a418b57a089062accc33338bcbb9daec4}\label{classFDISK___a418b57a089062accc33338bcbb9daec4}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{F\+D\+I\+S\+K\+\_\+()}{FDISK\_()}}
+{\footnotesize\ttfamily F\+D\+I\+S\+K\+\_\+\+::\+F\+D\+I\+S\+K\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor vacio del objeto 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFDISK___a1d030793b942f70d9cde1d7bd7a2bb36}\label{classFDISK___a1d030793b942f70d9cde1d7bd7a2bb36}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!create\+Part@{create\+Part}}
+\index{create\+Part@{create\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{create\+Part()}{createPart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::create\+Part (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Metodo para crear particion \mbox{\Hypertarget{classFDISK___ac3a1b362131afe438a0cfcd55d24fb24}\label{classFDISK___ac3a1b362131afe438a0cfcd55d24fb24}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!Debug\+Binario@{Debug\+Binario}}
+\index{Debug\+Binario@{Debug\+Binario}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{Debug\+Binario()}{DebugBinario()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::\+Debug\+Binario (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método para imprimir el \hyperlink{structMBR}{M\+BR} \mbox{\Hypertarget{classFDISK___ac066192fc5d768882f553a802e34a1fd}\label{classFDISK___ac066192fc5d768882f553a802e34a1fd}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!delete\+Part@{delete\+Part}}
+\index{delete\+Part@{delete\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{delete\+Part()}{deletePart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::delete\+Part (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Metodo para elimiar particion \mbox{\Hypertarget{classFDISK___a93bf6bebd83704cc477d365c52e78cca}\label{classFDISK___a93bf6bebd83704cc477d365c52e78cca}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!does\+Exist@{does\+Exist}}
+\index{does\+Exist@{does\+Exist}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{does\+Exist()}{doesExist()}}
+{\footnotesize\ttfamily bool F\+D\+I\+S\+K\+\_\+\+::does\+Exist (\begin{DoxyParamCaption}\item[{char $\ast$}]{name,  }\item[{kink}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método para verificar que la partición no exista ya. \mbox{\Hypertarget{classFDISK___a03f9fa267b7bdf7b2dda3aa13cfc960d}\label{classFDISK___a03f9fa267b7bdf7b2dda3aa13cfc960d}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!extended\+Part@{extended\+Part}}
+\index{extended\+Part@{extended\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{extended\+Part()}{extendedPart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::extended\+Part (\begin{DoxyParamCaption}\item[{kink}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método para crear partición extendida. \mbox{\Hypertarget{classFDISK___af29e537ad425951e4c4379f812d18a21}\label{classFDISK___af29e537ad425951e4c4379f812d18a21}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!get\+Fit@{get\+Fit}}
+\index{get\+Fit@{get\+Fit}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Fit()}{getFit()}}
+{\footnotesize\ttfamily char F\+D\+I\+S\+K\+\_\+\+::get\+Fit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Acceso a los atributos del objeto, se hicieron a conveniencia por lo cual no siguen la típica convención. \mbox{\Hypertarget{classFDISK___a36811336ad11d30c712b2a9760286087}\label{classFDISK___a36811336ad11d30c712b2a9760286087}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!get\+Size@{get\+Size}}
+\index{get\+Size@{get\+Size}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Size()}{getSize()}}
+{\footnotesize\ttfamily int F\+D\+I\+S\+K\+\_\+\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Permite obtener el tamaño de la partición a realizar según la unidad que fue indicada. \mbox{\Hypertarget{classFDISK___a7e5bbf0438a218aabb09bea7dfb2f9ef}\label{classFDISK___a7e5bbf0438a218aabb09bea7dfb2f9ef}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!get\+Type@{get\+Type}}
+\index{get\+Type@{get\+Type}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Type()}{getType()}}
+{\footnotesize\ttfamily signed char F\+D\+I\+S\+K\+\_\+\+::get\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Nos indica el tipo de partición sobre la cual se esta trabajando. \mbox{\Hypertarget{classFDISK___abb61ba4d1545287d53bca288bc3ae244}\label{classFDISK___abb61ba4d1545287d53bca288bc3ae244}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!get\+Unit@{get\+Unit}}
+\index{get\+Unit@{get\+Unit}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Unit()}{getUnit()}}
+{\footnotesize\ttfamily char F\+D\+I\+S\+K\+\_\+\+::get\+Unit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Acceso a la unidad, la letra de la unidad que se estableció en formato estándar según el enunciado. \mbox{\Hypertarget{classFDISK___aabd69e0175b1950638c51ccf26cb0dcb}\label{classFDISK___aabd69e0175b1950638c51ccf26cb0dcb}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!logic\+Part@{logic\+Part}}
+\index{logic\+Part@{logic\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{logic\+Part()}{logicPart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::logic\+Part (\begin{DoxyParamCaption}\item[{kink}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método para crear una partición lógica. Caso especial en el que sea la partición inicial. \mbox{\Hypertarget{classFDISK___a926ec9e4cadf17773cc630e0423af3db}\label{classFDISK___a926ec9e4cadf17773cc630e0423af3db}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!modify\+Part@{modify\+Part}}
+\index{modify\+Part@{modify\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{modify\+Part()}{modifyPart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::modify\+Part (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Metodo para modificar particion \mbox{\Hypertarget{classFDISK___a34427ce807ae61a1e0b101bb2a69b581}\label{classFDISK___a34427ce807ae61a1e0b101bb2a69b581}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!primary\+Part@{primary\+Part}}
+\index{primary\+Part@{primary\+Part}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{primary\+Part()}{primaryPart()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::primary\+Part (\begin{DoxyParamCaption}\item[{kink}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método para crear partición primaria. \mbox{\Hypertarget{classFDISK___a48abd8fe6a02cabd370e02a2b87164a3}\label{classFDISK___a48abd8fe6a02cabd370e02a2b87164a3}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!print\+End@{print\+End}}
+\index{print\+End@{print\+End}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{print\+End()}{printEnd()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::print\+End (\begin{DoxyParamCaption}\item[{kink}]{which }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Mensaje de confirmación de creación de particiones. \mbox{\Hypertarget{classFDISK___a00c4753fc48745eaf7b9fab40e864a94}\label{classFDISK___a00c4753fc48745eaf7b9fab40e864a94}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!run@{run}}
+\index{run@{run}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Método principal para ejecutar la instrucción. \mbox{\Hypertarget{classFDISK___a3cabb04c96798f42985d7c199ba1987f}\label{classFDISK___a3cabb04c96798f42985d7c199ba1987f}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!semantic@{semantic}}
+\index{semantic@{semantic}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{semantic()}{semantic()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::semantic (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Verifica que los atributos de la instruccion esten correctos semanticamente \mbox{\Hypertarget{classFDISK___a6de35bf474b492d03494d5cdf373df1a}\label{classFDISK___a6de35bf474b492d03494d5cdf373df1a}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Add@{set\+Add}}
+\index{set\+Add@{set\+Add}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Add()}{setAdd()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Add (\begin{DoxyParamCaption}\item[{char $\ast$}]{add }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo add. 
+\begin{DoxyParams}{Parameters}
+{\em add} & Indica la cantidad de espacio que se agregará o disminuirá la partición. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___a95fb02a0658219e583601de4844a517c}\label{classFDISK___a95fb02a0658219e583601de4844a517c}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Correct@{set\+Correct}}
+\index{set\+Correct@{set\+Correct}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Correct()}{setCorrect()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Correct (\begin{DoxyParamCaption}\item[{bool}]{correct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo correct. 
+\begin{DoxyParams}{Parameters}
+{\em correct} & identifica si la semántica del programa es correcta. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___ae5113216c8167ca54b1d5a99d29ed963}\label{classFDISK___ae5113216c8167ca54b1d5a99d29ed963}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Delete@{set\+Delete}}
+\index{set\+Delete@{set\+Delete}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Delete()}{setDelete()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Delete (\begin{DoxyParamCaption}\item[{char $\ast$}]{\+\_\+delete }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo delete 
+\begin{DoxyParams}{Parameters}
+{\em delete} & indica que tipo de borrado se aplicará para una partición. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___afb2ab7c0bdd1584aa5cb977de810bdd4}\label{classFDISK___afb2ab7c0bdd1584aa5cb977de810bdd4}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Fit@{set\+Fit}}
+\index{set\+Fit@{set\+Fit}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Fit()}{setFit()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Fit (\begin{DoxyParamCaption}\item[{char $\ast$}]{fit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del tipo de ajuste 
+\begin{DoxyParams}{Parameters}
+{\em fit} & indica el ajuste con el que las particiones se insertarán al disco. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___a28bccf6dd576824e040a29b389c8a650}\label{classFDISK___a28bccf6dd576824e040a29b389c8a650}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Name@{set\+Name}}
+\index{set\+Name@{set\+Name}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Name()}{setName()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Name (\begin{DoxyParamCaption}\item[{char $\ast$}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo name. 
+\begin{DoxyParams}{Parameters}
+{\em name} & indica el nombre de la partición. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___a7dbf2da61853e0ac59c6ce48862d4013}\label{classFDISK___a7dbf2da61853e0ac59c6ce48862d4013}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Path@{set\+Path}}
+\index{set\+Path@{set\+Path}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Path()}{setPath()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Path (\begin{DoxyParamCaption}\item[{char $\ast$}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo path 
+\begin{DoxyParams}{Parameters}
+{\em path} & indica en donde se guardará el disco. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___ac62891d61885c9e3e5d416b11f067c5b}\label{classFDISK___ac62891d61885c9e3e5d416b11f067c5b}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Size (\begin{DoxyParamCaption}\item[{char $\ast$}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo size 
+\begin{DoxyParams}{Parameters}
+{\em size} & indica el tamaño de la partición que se desea realizar. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___aa45b16384c955ecb2c7f0a02f8e62bb0}\label{classFDISK___aa45b16384c955ecb2c7f0a02f8e62bb0}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Type@{set\+Type}}
+\index{set\+Type@{set\+Type}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Type()}{setType()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Type (\begin{DoxyParamCaption}\item[{char $\ast$}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador de tipo 
+\begin{DoxyParams}{Parameters}
+{\em type} & Indica que tipo de operación hará el comando. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classFDISK___ac829852f41210c96957753e611c96c32}\label{classFDISK___ac829852f41210c96957753e611c96c32}} 
+\index{F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}!set\+Unit@{set\+Unit}}
+\index{set\+Unit@{set\+Unit}!F\+D\+I\+S\+K\+\_\+@{F\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Unit()}{setUnit()}}
+{\footnotesize\ttfamily void F\+D\+I\+S\+K\+\_\+\+::set\+Unit (\begin{DoxyParamCaption}\item[{char $\ast$}]{unit }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Modificador del atributo unit 
+\begin{DoxyParams}{Parameters}
+{\em unit} & indica la unidad de medida del parametro size. Megabytes = M$\vert$m Kilobytes = K$\vert$k Bytes = B$\vert$b \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+D\+I\+S\+K.\+h\end{DoxyCompactItemize}

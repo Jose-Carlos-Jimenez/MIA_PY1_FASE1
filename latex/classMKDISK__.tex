@@ -1,0 +1,161 @@
+\hypertarget{classMKDISK__}{}\section{M\+K\+D\+I\+S\+K\+\_\+ Class Reference}
+\label{classMKDISK__}\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMKDISK___a320ed310d37d0912e1d96000213aed35}{M\+K\+D\+I\+S\+K\+\_\+} ()
+\begin{DoxyCompactList}\small\item\em \hyperlink{structMBR}{M\+BR} auxiliar para escribir en disco. \end{DoxyCompactList}\item 
+void \hyperlink{classMKDISK___a6fdf50f3e20009c7a84f3311ba1bc70c}{set\+Size} (char $\ast$size)
+\item 
+void \hyperlink{classMKDISK___a12001e69efc0110fafe2a5190d06a47d}{set\+Fit} (char $\ast$fit)
+\item 
+void \hyperlink{classMKDISK___a7a7755430182c5668dbbacf102df839d}{set\+Unit} (char $\ast$unit)
+\item 
+void \hyperlink{classMKDISK___ab46a4029dc7384bf7687c71221139a38}{set\+Path} (char $\ast$path)
+\item 
+void \hyperlink{classMKDISK___a9bcda3d3c6b9e0b6e42ff23538993378}{set\+Correct} ()
+\item 
+void \hyperlink{classMKDISK___a0589ffca3e13a4175510e2c6a60f2108}{print\+Mk} ()
+\item 
+int \hyperlink{classMKDISK___a6e61f79331a9d7d64f90791ec4f071c2}{create\+Disk} ()
+\item 
+int \hyperlink{classMKDISK___a2e73ce9adcd4ff071099420917d4585a}{get\+Size} ()
+\item 
+int \hyperlink{classMKDISK___a1dd09004e54bd40d98db5edcd7c62f61}{get\+Unit} ()
+\item 
+std\+::string \hyperlink{classMKDISK___a79ea3d7a98d06a929418dad2cd380523}{to\+Lower\+String} (string cadena)
+\item 
+void \hyperlink{classMKDISK___a7eee0fd7b056178946930a5e6bedf643}{configure\+Master} ()
+\item 
+char \hyperlink{classMKDISK___a7f632d7a17f80e97a0e4050c29ae95cd}{get\+Fit} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMKDISK___a320ed310d37d0912e1d96000213aed35}\label{classMKDISK___a320ed310d37d0912e1d96000213aed35}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{M\+K\+D\+I\+S\+K\+\_\+()}{MKDISK\_()}}
+{\footnotesize\ttfamily M\+K\+D\+I\+S\+K\+\_\+\+::\+M\+K\+D\+I\+S\+K\+\_\+ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\hyperlink{structMBR}{M\+BR} auxiliar para escribir en disco. 
+
+Constructor 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classMKDISK___a7eee0fd7b056178946930a5e6bedf643}\label{classMKDISK___a7eee0fd7b056178946930a5e6bedf643}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!configure\+Master@{configure\+Master}}
+\index{configure\+Master@{configure\+Master}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{configure\+Master()}{configureMaster()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::configure\+Master (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Configura el \hyperlink{structMBR}{M\+BR} cuando todos los parámetros están ok, este utiliza los parámetros de la clase misma por lo cual no recibe parámetros. Seteando tamaño
+
+Seteando fecha y hora
+
+Firma del disco
+
+Guardando tipo de fit \mbox{\Hypertarget{classMKDISK___a6e61f79331a9d7d64f90791ec4f071c2}\label{classMKDISK___a6e61f79331a9d7d64f90791ec4f071c2}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!create\+Disk@{create\+Disk}}
+\index{create\+Disk@{create\+Disk}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{create\+Disk()}{createDisk()}}
+{\footnotesize\ttfamily int M\+K\+D\+I\+S\+K\+\_\+\+::create\+Disk (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Crea un disco con los parámetros de la clase si todo está ok. Creando el disco principal
+
+Comando para permisos.
+
+Creando R\+A\+ID
+
+Mensaje para notificar. \mbox{\Hypertarget{classMKDISK___a7f632d7a17f80e97a0e4050c29ae95cd}\label{classMKDISK___a7f632d7a17f80e97a0e4050c29ae95cd}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!get\+Fit@{get\+Fit}}
+\index{get\+Fit@{get\+Fit}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Fit()}{getFit()}}
+{\footnotesize\ttfamily char M\+K\+D\+I\+S\+K\+\_\+\+::get\+Fit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Obtiene la letra representativa del tipo de ajuste que se tiene. \mbox{\Hypertarget{classMKDISK___a2e73ce9adcd4ff071099420917d4585a}\label{classMKDISK___a2e73ce9adcd4ff071099420917d4585a}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!get\+Size@{get\+Size}}
+\index{get\+Size@{get\+Size}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Size()}{getSize()}}
+{\footnotesize\ttfamily int M\+K\+D\+I\+S\+K\+\_\+\+::get\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Devuelve el tamaño del disco en bytes. \mbox{\Hypertarget{classMKDISK___a1dd09004e54bd40d98db5edcd7c62f61}\label{classMKDISK___a1dd09004e54bd40d98db5edcd7c62f61}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!get\+Unit@{get\+Unit}}
+\index{get\+Unit@{get\+Unit}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{get\+Unit()}{getUnit()}}
+{\footnotesize\ttfamily int M\+K\+D\+I\+S\+K\+\_\+\+::get\+Unit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Devuelve un múltiplo para cuantificar las unidades establecidas. \mbox{\Hypertarget{classMKDISK___a0589ffca3e13a4175510e2c6a60f2108}\label{classMKDISK___a0589ffca3e13a4175510e2c6a60f2108}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!print\+Mk@{print\+Mk}}
+\index{print\+Mk@{print\+Mk}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{print\+Mk()}{printMk()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::print\+Mk (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Acciona el comando para crear disco. \mbox{\Hypertarget{classMKDISK___a9bcda3d3c6b9e0b6e42ff23538993378}\label{classMKDISK___a9bcda3d3c6b9e0b6e42ff23538993378}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!set\+Correct@{set\+Correct}}
+\index{set\+Correct@{set\+Correct}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Correct()}{setCorrect()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::set\+Correct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Verifica si la semántica del caso es adecuada. \mbox{\Hypertarget{classMKDISK___a12001e69efc0110fafe2a5190d06a47d}\label{classMKDISK___a12001e69efc0110fafe2a5190d06a47d}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!set\+Fit@{set\+Fit}}
+\index{set\+Fit@{set\+Fit}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Fit()}{setFit()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::set\+Fit (\begin{DoxyParamCaption}\item[{char $\ast$}]{fit }\end{DoxyParamCaption})}
+
+Configura el parámetro fit 
+\begin{DoxyParams}{Parameters}
+{\em fit} & Indica el tipo de ajuste con el que se agregarán las particiones en el disco. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMKDISK___ab46a4029dc7384bf7687c71221139a38}\label{classMKDISK___ab46a4029dc7384bf7687c71221139a38}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!set\+Path@{set\+Path}}
+\index{set\+Path@{set\+Path}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Path()}{setPath()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::set\+Path (\begin{DoxyParamCaption}\item[{char $\ast$}]{path }\end{DoxyParamCaption})}
+
+Indica la ruta del archivo 
+\begin{DoxyParams}{Parameters}
+{\em path} & indica en donde se debe de crear el disco. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMKDISK___a6fdf50f3e20009c7a84f3311ba1bc70c}\label{classMKDISK___a6fdf50f3e20009c7a84f3311ba1bc70c}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::set\+Size (\begin{DoxyParamCaption}\item[{char $\ast$}]{size }\end{DoxyParamCaption})}
+
+Configura el atributo size 
+\begin{DoxyParams}{Parameters}
+{\em size} & Indica la cantidad de unidades que ocupará el disco. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMKDISK___a7a7755430182c5668dbbacf102df839d}\label{classMKDISK___a7a7755430182c5668dbbacf102df839d}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!set\+Unit@{set\+Unit}}
+\index{set\+Unit@{set\+Unit}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{set\+Unit()}{setUnit()}}
+{\footnotesize\ttfamily void M\+K\+D\+I\+S\+K\+\_\+\+::set\+Unit (\begin{DoxyParamCaption}\item[{char $\ast$}]{unit }\end{DoxyParamCaption})}
+
+Configura las unidades del disco. 
+\begin{DoxyParams}{Parameters}
+{\em unit} & indica si son megabytes, kilobytes ó bytes. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMKDISK___a79ea3d7a98d06a929418dad2cd380523}\label{classMKDISK___a79ea3d7a98d06a929418dad2cd380523}} 
+\index{M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}!to\+Lower\+String@{to\+Lower\+String}}
+\index{to\+Lower\+String@{to\+Lower\+String}!M\+K\+D\+I\+S\+K\+\_\+@{M\+K\+D\+I\+S\+K\+\_\+}}
+\subsubsection{\texorpdfstring{to\+Lower\+String()}{toLowerString()}}
+{\footnotesize\ttfamily string M\+K\+D\+I\+S\+K\+\_\+\+::to\+Lower\+String (\begin{DoxyParamCaption}\item[{string}]{cadena }\end{DoxyParamCaption})}
+
+Devuelve un string con todos los cáracteres contenidos en el parámetro en minúscula. 
+\begin{DoxyParams}{Parameters}
+{\em cadena} & Cadena que se desea en minúsculas. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+M\+K\+D\+I\+S\+K.\+h\end{DoxyCompactItemize}
