@@ -327,7 +327,7 @@ void REP_::reportMBR()
         comandoS += pathTwice;
         comandoS +="\' -o \'" + pathClone + terminacion + " \' -T" + terminacion.substr(1,terminacion.length());
         system(comandoS.c_str());
-        cout << "Reporte del DISK ha sido creado." << endl;
+        cout << "Reporte del MBR ha sido creado." << endl;
     }
     else
     {

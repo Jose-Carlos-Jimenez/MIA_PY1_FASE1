@@ -33,16 +33,11 @@ FDISK_* fdisk_ = new FDISK_();
 REP_* rep_ = new REP_();
 MOUNT_* mount_ = new MOUNT_();
 UNMOUNT_* unmount_ = new UNMOUNT_();
+void yyerror(const char *s);
 
 string delimiter="-----------------------------------------------------------------------------------------------------------------------------";
 
-void yyerror( const char *s)
-{
-    printf("Error sintáctico en la fila %u\n",SourceLine);
-    s=s;
-}
 %}
-
 /*---------------Declaración de tokens utilizados en el léxico--------------------*/
 
 %start INICIO
@@ -82,7 +77,6 @@ void yyerror( const char *s)
 %token<STRING> ruta
 %token<STRING> guion
 %token<STRING> mbr
-%token eof
 
 /*----------------------Declaración de producciones------------------------*/
 
@@ -218,3 +212,7 @@ REPP: guion path igual ruta {rep_->setPath($4);}
 ;
 %%
 
+void yyerror(const char *s)
+{
+    printf("Error sintactico en la linea %i: %s\n", SourceLine, s);
+}

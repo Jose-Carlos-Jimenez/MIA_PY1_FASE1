@@ -79,8 +79,7 @@ extern int yydebug;
     disk = 289,
     ruta = 290,
     guion = 291,
-    mbr = 292,
-    eof = 293
+    mbr = 292
   };
 #endif
 
@@ -89,12 +88,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 114 "sintactico.y" /* yacc.c:1909  */
+#line 108 "sintactico.y" /* yacc.c:1909  */
 
 char* STRING;
 char* NUM;
 
-#line 98 "parser.h" /* yacc.c:1909  */
+#line 97 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

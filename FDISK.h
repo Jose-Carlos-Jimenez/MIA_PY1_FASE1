@@ -87,6 +87,12 @@ public:
     void setPath(char *path)
     {
         this->path = path;
+        string aux = path;
+        if(aux[0] == '\"')
+        {
+            aux = aux.substr(1,aux.size()-2);
+            strcpy(this->path, aux.c_str());
+        }
         raid_path = path;
         this->raid_path = raid_path.substr(0, raid_path.size()-5) + "_raid.disk";
 
@@ -380,18 +386,18 @@ public:
                 }
                 else
                 {
-                    printf("La partición ya existe, por lo que no se puede volver a crear en este disco.\n");
+                    printf("La partición  %s ya existe, por lo que no se puede volver a crear en este disco.\n", this->name);
                 }
             }
             else
             {
-                printf("Espacio insuficiente para esta partición en el disco.\n");
+                printf("Espacio insuficiente para %s en el disco.\n", this->name);
             }
 
         }
         else
         {
-            printf("Espacio insuficiente para esta partición en el disco.\n");
+            printf("Espacio insuficiente para %s en el disco.\n",this->name);
         }
         fclose(file);
 
@@ -599,12 +605,12 @@ public:
                     }
                     else
                     {
-                        printf("La partición ya existe, por lo que no se puede volver a crear en este disco.\n");
+                        printf("La partición %s  ya existe, por lo que no se puede volver a crear en este disco.\n",this->name);
                     }
                 }
                 else
                 {
-                    printf("Espacio insuficiente para esta partición en el disco.\n");
+                    printf("Espacio insuficiente para %s en el disco.\n", this->name);
                 }
             }
             else
@@ -615,7 +621,7 @@ public:
         }
         else
         {
-            printf("Partición extendida ya existe en este equipo.\n");
+            printf("Partición extendida ya existe en este disco.\n");
         }
         fclose(file);
     }
@@ -685,7 +691,7 @@ public:
                         }
                         else
                         {
-                            cout << "Espacio insuficiente en la partición extendida." << endl;
+                            cout << "Espacio insuficiente en la partición "<<this->name<< " extendida." << endl;
                         }
                     }
                     else/*Caso especial en el que sea la partición inicial.*/
@@ -719,7 +725,7 @@ public:
             }
             else
             {
-                cout << "La partición que deseas crear ya existe." << endl;
+                cout << "La partición "<< this->name <<" que deseas crear ya existe." << endl;
             }
         }
         else
@@ -785,7 +791,7 @@ public:
     {
         switch (which) {
         case principal:
-            printf("Partición creada con éxito.\n");
+            printf("Partición %s creada con éxito.\n",this->name);
             break;
         case raid:
             printf("Respaldo actualizado.\n");
@@ -837,8 +843,9 @@ public:
             //Solo deben de estar los parametros delete, name y path.
             if(_delete != 0 && path !=0 && name != 0)
             {
-                if(size == 0 && unit == 0 && type==empty && fit == 0 && add == 0 )
+                if(size == 0 && type==empty && fit == 0 && add == 0 )
                 {
+                    cout << "Aquí debería de borrar pana pero no hubo tiempo." << endl;
                 }
                 else
                 {
