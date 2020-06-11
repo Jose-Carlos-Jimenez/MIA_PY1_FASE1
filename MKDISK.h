@@ -201,6 +201,8 @@ int MKDISK_::createDisk()
         configureMaster();
         fseek(f,0,SEEK_SET);
         fwrite(&this->master, sizeof (MBR),1,f);
+        fseek(f,0,SEEK_SET);
+        fread(&master,sizeof (MBR),1,f);
         fflush(f);
         fclose(f);
 
@@ -273,7 +275,7 @@ void MKDISK_::configureMaster()
 
 char MKDISK_::getFit()
 {
-    if(fit_[0]== '\0')
+    if(tolower(fit_[0]) != 'b' || tolower(fit_[0]) != 'f' || tolower(fit_[0]) != 'w')
     {
         return 'F';
     }

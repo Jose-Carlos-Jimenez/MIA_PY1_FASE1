@@ -141,17 +141,18 @@ void MOUNT_::setLetter(char c)
 
 char MOUNT_::getLetter()
 {
-    char a = 'a' - 1;
+    char a = 'a';
     if(mounted->size() == 0){
         setLetter('a');
         return 'a';
     }
     QList<MOUNT_>::iterator i;
-    i+3;
+    QList<string> *marcadas = new QList<string>();
     for(i=mounted->begin(); i!=mounted->end(); i++)
     {
-        if(i->path != this->path)
+        if(i->path != this->path && !marcadas->contains(i->path))
         {
+            marcadas->append(i->path);
             a++;
         }
         if(i->path == this->path)
@@ -166,7 +167,7 @@ char MOUNT_::getLetter()
 
 int MOUNT_::getNumber()
 {
-    int a = 0;
+    int a = 1;
     QList<MOUNT_>::iterator i;
     i=i+1;
     for(i = mounted->begin(); i!=mounted->end(); i++ )
@@ -212,6 +213,7 @@ void MOUNT_::run()
     semantic();
     if(this->correct)
     {
+        setId();
         cout <<"Intentando montar: "<< this->getId() << endl;
         mountPartition();
     }
@@ -299,7 +301,6 @@ void MOUNT_::mountPartition()
         if(!isMounted())
         {
             ///Insertar a la lista.
-            setId();
             mounted->append(*this);
             cout << "La partición " << this->id << " ha sido montada con éxito." << endl;
         }

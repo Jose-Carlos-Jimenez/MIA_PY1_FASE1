@@ -3,12 +3,17 @@
 
 #endif // FDISK_H
 
+#include "MOUNT.h"
+
+#include <QList>
 #include<iostream>
 #include<stdio.h>
 #include<string.h>
 #include<structs.h>
 
 using namespace  std;
+extern QList<MOUNT_> *mounted;
+
 /**
   @brief
  * Clase en la que se programaron el análisis semantico de la función FDISK
@@ -720,8 +725,8 @@ public:
                             fseek(file,ebr.part_next,SEEK_SET);
                             fread(&ebr,sizeof(EBR),1,file);
                         }
-                        int needed=ebr.part_size + ebr.part_start +getSize();
-                        cout << "Espacio necesario para la partición: " << to_string(needed) << " bytes" << endl;
+                        int needed= ebr.part_size + ebr.part_start + getSize();
+                        cout << "Espacio necesario para la partición: " << to_string(getSize()) << " bytes" << endl;
                         bool fitIn = needed <= (master.mbr_partitions[extIndex].part_size + master.mbr_partitions[extIndex].part_start);
                         if(fitIn)
                         {
@@ -856,13 +861,7 @@ public:
      * Metodo para modificar particion
      */
     void modifyPart(){
-        return;
-    }
-
-    /**
-     * Metodo para elimiar particion
-     */
-    void deletePart(){
+        cout << "Operación add exitosa" << endl;
         return;
     }
 
@@ -898,7 +897,6 @@ public:
             {
                 if(size == 0 && type==empty && fit == 0 && add == 0 )
                 {
-                    cout << "Aquí debería de borrar pana pero no hubo tiempo." << endl;
                 }
                 else
                 {
@@ -914,7 +912,7 @@ public:
         }
         else if(operation == modify_)
         {
-            if(add != 0 && size != 0 && path!=0 && name != 0)
+            if(add != 0 && path!=0 && name != 0)
             {
                 if(type== empty && fit == 0 && _delete ==0 )
                 {
@@ -967,7 +965,7 @@ public:
             fclose(raidf);
             switch (this->operation) {
             case delete_:
-                deletePart();
+                deletePart(principal);
                 break;
             case modify_:
                 modifyPart();
@@ -992,5 +990,200 @@ public:
         MBR master;
         fread(&master,sizeof (MBR),1,file);
         fclose(file);
+    }
+
+    /*
+     * Método para eliminar particiones
+    */
+    void deletePart(kink which){
+        FILE *file;
+        //Abrir el archivo.
+        if((file = fopen(this->path, "r+b"))){
+            //Buscarla en la lista de montadas.
+            bool mount = false;
+            /*QList<MOUNT_>::iterator i;
+            for(i = mounted->begin(); i != mounted->end(); i++)
+            {
+                if(i->getName() == this->name)
+                {
+                    mount = true;
+                }
+            }*/
+
+            // Aquí termina la busqueda para determinar esto.
+            if(!mount){
+                MBR master;
+                fseek(file,0,SEEK_SET);
+                fread(&master,sizeof (MBR),1,file);
+                int index = -1;
+                int extIndex = -1;
+                bool isExtended = false;
+                string opcion = "";
+                char buffer = '1';
+
+                /// Buscando la partición
+                for(int i = 0; i < 4; i++){
+                    if(strcmp(master.mbr_partitions[i].part_name ,name) == 0){
+                        index = i;
+                        if(master.mbr_partitions[i].part_type == 'E')
+                            isExtended = true;
+                        break;
+                    }else if(master.mbr_partitions[i].part_type == 'E'){
+                        extIndex = i;
+                    }
+                }
+                string tipo("full");
+                if(index != -1)
+                {
+                    if(isExtended)
+                    {
+                        if(strcmp(this->_delete,tipo.c_str()))
+                        {
+                            master.mbr_partitions[index].part_status = '1';
+                            strcpy(master.mbr_partitions[index].part_name,"");
+                            fseek(file,0,SEEK_SET);
+                            fwrite(&master,sizeof(MBR),1,file);
+                            fseek(file,master.mbr_partitions[index].part_start,SEEK_SET);
+                            fwrite(&buffer,1,master.mbr_partitions[index].part_size,file);
+                            if(which == principal)
+                            {
+                                cout << "Particion extendida eliminada con exito" << endl;
+                            }
+                            else
+                            {
+                                cout << "Partición extendida eliminada del RAID." << endl;
+                            }
+                        }
+                        else
+                        {
+                            master.mbr_partitions[index].part_status = '1';
+                            strcpy(master.mbr_partitions[index].part_name,"");
+                            fseek(file,0,SEEK_SET);
+                            fwrite(&master,sizeof(MBR),1,file);
+                            if(which == principal)
+                            {
+                                cout << "Particion extendida eliminada con exito" << endl;
+                            }
+                            else
+                            {
+                                cout << "Partición extendida eliminada del RAID." << endl;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        if(strcmp(this->_delete,tipo.c_str()))
+                        {
+                            master.mbr_partitions[index].part_status = '1';
+                            strcpy(master.mbr_partitions[index].part_name,"");
+                            fseek(file,0,SEEK_SET);
+                            fwrite(&master,sizeof(MBR),1,file);
+                            fseek(file,master.mbr_partitions[index].part_start,SEEK_SET);
+                            fwrite(&buffer,1,master.mbr_partitions[index].part_size,file);
+                            if(which == principal)
+                            {
+                                cout << "Particion primaria eliminada con exito" << endl;
+                            }
+                            else
+                            {
+                                cout << "Partición primaria eliminada del RAID." << endl;
+                            }
+                        }
+                        else
+                        {
+                            master.mbr_partitions[index].part_status = '1';
+                            strcpy(master.mbr_partitions[index].part_name,"");
+                            fseek(file,0,SEEK_SET);
+                            fwrite(&master,sizeof(MBR),1,file);
+                            if(which == principal)
+                            {
+                                cout << "Particion primaria eliminada con exito" << endl;
+                            }
+                            else
+                            {
+                                cout << "Partición primaria eliminada del RAID." << endl;
+                            }
+                        }
+
+                    }
+                }
+                else
+                {
+                    if(extIndex != -1)
+                    {
+                        bool flag = false;
+                        EBR extendedBoot;
+                        fseek(file,master.mbr_partitions[extIndex].part_start, SEEK_SET);
+                        fread(&extendedBoot,sizeof(EBR),1,file);
+                        if(extendedBoot.part_size!=0){
+                            fseek(file, master.mbr_partitions[extIndex].part_start,SEEK_SET);
+                            while((fread(&extendedBoot,sizeof(EBR),1,file))!=0 && (ftell(file) < (master.mbr_partitions[extIndex].part_start + master.mbr_partitions[extIndex].part_size))) {
+                                char* n = extendedBoot.part_name;
+                                if((strcmp(n,this->name)==0) && extendedBoot.part_status != '1'){
+                                    flag = true;
+                                    break;
+                                }else if(extendedBoot.part_next == -1){
+                                    break;
+                                }
+                                fseek(file,extendedBoot.part_next,SEEK_SET);
+                            }
+                        }
+                        if(flag)
+                        {
+                            if(strcmp(this->_delete,tipo.c_str()))
+                            {
+                                extendedBoot.part_status = '1';
+                                strcpy(extendedBoot.part_name, "");
+                                fseek(file, ftell(file)-sizeof(EBR),SEEK_SET);
+                                fwrite(&extendedBoot,sizeof(EBR),1,file);
+                                if(which == principal)
+                                {
+                                    cout << "Particion lógica eliminada con exito" << endl;
+                                }
+                                else
+                                {
+                                    cout << "Partición lógica eliminada del RAID." << endl;
+                                }
+                            }
+                            else
+                            {
+                                extendedBoot.part_status = '1';
+                                strcpy(extendedBoot.part_name, "");
+                                fseek(file, ftell(file)-sizeof(EBR),SEEK_SET);
+                                fwrite(&extendedBoot,sizeof(EBR),1,file);
+                                fwrite(&buffer,1,extendedBoot.part_size,file);
+                                if(which == principal)
+                                {
+                                    cout << "Particion lógica eliminada con exito" << endl;
+                                }
+                                else
+                                {
+                                    cout << "Partición lógica eliminada del RAID." << endl;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            cout << "La partición que desea eliminar no existe." << endl;
+                        }
+                    }
+                    else
+                    {
+                        cout << "La partición que desea eliminar no existe." << endl;
+                    }
+                }
+            }
+            else
+            {
+                cout << "La partición aún se encuentra montada, por favor desmontela." << endl;
+            }
+            fclose(file);
+        }
+        else
+        {
+            cout << "El disco especificado para borrar no existe." << endl;
+        }
     }
 };

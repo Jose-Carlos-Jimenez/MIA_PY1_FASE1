@@ -126,6 +126,7 @@ INSTRUCCION: MKDISK
            | UNMOUNT
            | REP
            | EXEC
+           | error{}
 ;
 
 MKDISK:mkdisk MKDISKPS {mkdisk_->printMk();std::cout << delimiter << std::endl;;mkdisk_ = new MKDISK_();}
@@ -215,4 +216,5 @@ REPP: guion path igual ruta {rep_->setPath($4);}
 void yyerror(const char *s)
 {
     printf("Error sintactico en la linea %i: %s\n", SourceLine, s);
+    std::cout << delimiter << std::endl;
 }
